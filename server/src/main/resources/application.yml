@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/personnel-salary
+    username: personnel-salary
+    password: personnel-salary
+  mail:
+    username: zuobiaoxi0425@163.com
+    password: RUZMSVFPRFIESNSC
+    host: smtp.163.com
+  redis:
+    port: 6379
+    host: 192.168.56.101
+server:
+  servlet:
+    context-path: /reality

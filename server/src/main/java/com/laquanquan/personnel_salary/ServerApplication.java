@@ -1,13 +1,13 @@
-package com.laquanquan.personnelsalary;
+package com.laquanquan.personnel_salary;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PersonnelSalaryApplication {
+public class ServerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(PersonnelSalaryApplication.class, args);
+        SpringApplication.run(ServerApplication.class, args);
     }
 
 }
