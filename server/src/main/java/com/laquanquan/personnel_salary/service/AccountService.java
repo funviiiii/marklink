@@ -28,4 +28,12 @@ public interface AccountService {
      * @return 获取到的用户编号，若没查询到则返回空
      */
     String getAccountByEmail(String email);
+
+    /**
+     * 根据手机号查询一个对象
+     *
+     * @param phone 手机号
+     * @return 获取到的用户编号，若没查询到则返回空
+     */
+    String getAccountByPhone(String phone);
 }

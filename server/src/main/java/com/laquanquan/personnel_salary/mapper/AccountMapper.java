@@ -37,6 +37,15 @@ public interface AccountMapper {
      */
     @Select("SELECT `uid`,`username`,`email`,`phone` FROM `t_account` WHERE `email`=#{email} AND `is_deleted`=0")
     Account selectOneByEmail(String email);
+
+    /**
+     * 根据手机查询一个账户对象
+     *
+     * @param phone 邮箱
+     * @return 返回查询到的用户对象
+     */
+    @Select("SELECT `uid`,`username`,`email`,`phone` FROM `t_account` WHERE `phone`=#{phone} AND `is_deleted`=0")
+    Account selectOneByPhone(String phone);
 }
 
 

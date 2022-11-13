@@ -43,5 +43,20 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public String getAccountByEmail(String email) {
         Account account = accountMapper.selectOneByEmail(email);
+        if (account == null) {
+            log.warn("找不到用户名 为 {} 的对象", email);
+            throw new DataNotFoundException("找不到相应的账户");
+        }
+        return account.getUid();
+    }
+
+    @Override
+    public String getAccountByPhone(String phone) {
+        Account account = accountMapper.selectOneByPhone(phone);
+        if (account == null) {
+            log.warn("找不到用户名 为 {} 的对象", phone);
+            throw new DataNotFoundException("找不到相应的账户");
+        }
+        return account.getUid();
     }
 }

@@ -43,4 +43,11 @@ public class AccountController {
     public String getAccountByEmail(@PathVariable String email) {
         return accountService.getAccountByEmail(email);
     }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(method = RequestMethod.GET, value = "/phone/{phone}")
+    public String getAccountByPhone(@PathVariable String phone) {
+        return accountService.getAccountByPhone(phone);
+    }
 }
