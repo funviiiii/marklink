@@ -21,7 +21,6 @@ import javax.annotation.Resource;
 @NoArgsConstructor
 @ToString
 public class EmailSender {
-
     private String from;
     @Resource
     private JavaMailSender javaMailSender;
