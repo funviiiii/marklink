@@ -36,4 +36,11 @@ public class AccountController {
     public String getAccountByUsername(@PathVariable String username) {
         return accountService.getAccountByUsername(username);
     }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(method = RequestMethod.GET, value = "/email/{email}")
+    public String getAccountByEmail(@PathVariable String email) {
+        return accountService.getAccountByEmail(email);
+    }
 }

@@ -39,4 +39,9 @@ public class AccountServiceImpl implements AccountService {
         }
         return account.getUid();
     }
+
+    @Override
+    public String getAccountByEmail(String email) {
+        Account account = accountMapper.selectOneByEmail(email);
+    }
 }

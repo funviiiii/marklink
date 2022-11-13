@@ -6,7 +6,7 @@ package com.laquanquan.personnel_salary.service;
 public interface AccountService {
 
     /**
-     * 根据uid查询一个账户对象
+     * 根据uid查询一个账户
      *
      * @param uid 用户编号
      * @return 获取到的用户编号，若没查询到则返回空
@@ -14,10 +14,18 @@ public interface AccountService {
     String getAccountById(String uid);
 
     /**
-     * 根据用户名查询一个账户对象
+     * 根据用户名查询一个账户
      *
      * @param username 用户名
      * @return 获取到的用户编号，若没查询到则返回空
      */
     String getAccountByUsername(String username);
+
+    /**
+     * 根据邮箱查询一个账户
+     *
+     * @param email 用户邮箱
+     * @return 获取到的用户编号，若没查询到则返回空
+     */
+    String getAccountByEmail(String email);
 }

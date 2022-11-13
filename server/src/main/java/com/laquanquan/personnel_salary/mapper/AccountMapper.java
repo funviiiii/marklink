@@ -28,6 +28,15 @@ public interface AccountMapper {
      */
     @Select("SELECT `uid`,`username`,`email`,`phone` FROM `t_account` WHERE `username`=#{username} AND `is_deleted`=0")
     Account selectOneByUsername(String username);
+
+    /**
+     * 根据邮箱查询一个账户对象
+     *
+     * @param email 邮箱
+     * @return 返回查询到的用户对象
+     */
+    @Select("SELECT `uid`,`username`,`email`,`phone` FROM `t_account` WHERE `email`=#{email} AND `is_deleted`=0")
+    Account selectOneByEmail(String email);
 }
 
 
