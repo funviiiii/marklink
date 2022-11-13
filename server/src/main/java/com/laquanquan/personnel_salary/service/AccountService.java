@@ -12,4 +12,12 @@ public interface AccountService {
      * @return 获取到的用户编号，若没查询到则返回空
      */
     String getAccountById(String uid);
+
+    /**
+     * 根据用户名查询一个账户对象
+     *
+     * @param username 用户名
+     * @return 获取到的用户编号，若没查询到则返回空
+     */
+    String getAccountByUsername(String username);
 }

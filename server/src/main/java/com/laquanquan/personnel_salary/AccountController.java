@@ -2,6 +2,7 @@ package com.laquanquan.personnel_salary;
 
 import com.laquanquan.personnel_salary.service.AccountService;
 import com.laquanquan.personnel_salary.utils.WebResponseBody;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -23,9 +24,16 @@ public class AccountController {
      * @return 返回一个uid，若没有查询到则返回空
      */
     @ResponseBody
-    @ResponseStatus
+    @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method = RequestMethod.GET, value = "/uid/{uid}")
-    public String getAccount(@PathVariable String uid) {
+    public String getAccountByUid(@PathVariable String uid) {
         return accountService.getAccountById(uid);
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(method = RequestMethod.GET, value = "/username/{username}")
+    public String getAccountByUsername(@PathVariable String username) {
+        return accountService.getAccountByUsername(username);
     }
 }

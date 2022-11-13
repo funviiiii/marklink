@@ -24,9 +24,19 @@ public class AccountServiceImpl implements AccountService {
         // 查询账户对象
         Account account = accountMapper.selectOneByUid(uid);
         if (account == null) {
-            log.warn("找不到 uid 为 {} 的对象", uid);
+            log.warn("找不到uid为 {} 的对象", uid);
             throw new DataNotFoundException("找不到相应的账户");
         }
         return uid;
+    }
+
+    @Override
+    public String getAccountByUsername(String username) {
+        Account account = accountMapper.selectOneByUsername(username);
+        if (account == null) {
+            log.warn("找不到用户名 为 {} 的对象", username);
+            throw new DataNotFoundException("找不到相应的账户");
+        }
+        return account.getUid();
     }
 }
