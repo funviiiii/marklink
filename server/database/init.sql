@@ -21,7 +21,7 @@ CREATE TABLE `t_account`
     `username`    VARCHAR(25)      NOT NULL UNIQUE COMMENT '用户名',
     `password`    VARCHAR(25)      NOT NULL COMMENT '密码',
     `email`       VARCHAR(40) UNIQUE COMMENT '邮箱',
-    `phone`       VARCHAR(20)      NOT NULL UNIQUE COMMENT '电话号码',
+    `phone`       VARCHAR(20) UNIQUE COMMENT '电话号码',
     `create_time` DATETIME         NOT NULL DEFAULT NOW() COMMENT '创建时间',
     `update_time` DATETIME         NOT NULL DEFAULT NOW() COMMENT '上次更新时间',
     `is_deleted`  TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '逻辑删除标识',
