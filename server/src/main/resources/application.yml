@@ -14,3 +14,6 @@ spring:
 server:
   servlet:
     context-path: /reality
+
+email-sender:
+  from: zuobiaoxi0425@163.com(拉圈圈)
