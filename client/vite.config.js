@@ -14,5 +14,6 @@ export default defineConfig({
   }),],
   server: {
     port: 56789,
+    opener: 'chrome'
   }
 })
