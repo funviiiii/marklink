@@ -3,8 +3,9 @@
       label-width="100"
       class="el-col-offset-6"
   >
-    <el-form-item label="真实姓名："
-                  required
+    <el-form-item
+        label="真实姓名："
+        required
     >
       <el-input
           v-model="user.name"
@@ -39,13 +40,19 @@
 </template>
 
 <script setup>
-import {reactive} from "vue";
+import {reactive, watch} from "vue";
 
 const user = reactive({
   name: "",
   gender: "保密",
   birthday: "",
   is_married: false
+})
+
+let emit = defineEmits(["report-data"]);
+
+watch(user, () => {
+  emit("report-data", user)
 })
 </script>
 

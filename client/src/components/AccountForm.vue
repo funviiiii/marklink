@@ -41,7 +41,9 @@
 
 <script setup>
 
-import {reactive} from "vue";
+import {reactive, watch} from "vue";
+
+const emit = defineEmits(["report-data"])
 
 const account = reactive({
   username: "",
@@ -78,6 +80,12 @@ const rules = reactive({
       trigger: "blur"
     }
   ]
+})
+
+watch(account, () => {
+  if (account.checkPassword === account.password) {
+    emit("report-data", account)
+  }
 })
 </script>
 
