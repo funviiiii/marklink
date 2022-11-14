@@ -54,8 +54,9 @@ public class AccountController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public void signUp(@RequestBody SignUpVO signUpVO) throws SQLDataException {
+    @ResponseStatus(HttpStatus.CREATED)
+    public WebResponseBody<String> signUp(@RequestBody SignUpVO signUpVO) throws SQLDataException {
         accountService.signUp(signUpVO.getAccount(), signUpVO.getUser());
+        return new WebResponseBody<>("注册成功");
     }
 }

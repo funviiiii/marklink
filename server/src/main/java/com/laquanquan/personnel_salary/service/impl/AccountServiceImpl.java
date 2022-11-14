@@ -1,5 +1,6 @@
 package com.laquanquan.personnel_salary.service.impl;
 
+import com.laquanquan.personnel_salary.constant.RegPattern;
 import com.laquanquan.personnel_salary.domain.Account;
 import com.laquanquan.personnel_salary.domain.User;
 import com.laquanquan.personnel_salary.exception.AccountDuplicateException;
@@ -30,8 +31,6 @@ public class AccountServiceImpl implements AccountService {
 
     @Resource
     private UserMapper userMapper;
-
-    private static final Pattern ACCOUNT_REG = Pattern.compile("^[\\w.]{6,16}$");
 
     @Override
     public String getAccountById(String uid) {
@@ -106,7 +105,7 @@ public class AccountServiceImpl implements AccountService {
      * @param account 账户信息
      */
     private void checkInfo(Account account) {
-        if (!(ACCOUNT_REG.matcher(account.getUsername()).find() && ACCOUNT_REG.matcher(account.getPassword()).find())) {
+        if (!(RegPattern.ACCOUNT_REG.matcher(account.getUsername()).find() || !RegPattern.ACCOUNT_REG.matcher(account.getPassword()).find())) {
             throw new UserInfoInvalidException("账户信息格式有误，请重试");
         }
     }
