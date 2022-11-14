@@ -8,7 +8,6 @@
           <sign-up-form></sign-up-form>
         </el-tab-pane>
         <el-tab-pane label="登录">
-
         </el-tab-pane>
       </el-tabs>
     </el-main>
