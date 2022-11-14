@@ -1,7 +1,8 @@
-package com.laquanquan.personnel_salary;
+package com.laquanquan.personnel_salary.controller;
 
 import com.laquanquan.personnel_salary.service.AccountService;
 import com.laquanquan.personnel_salary.utils.WebResponseBody;
+import com.laquanquan.personnel_salary.vo.SignUpVO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,5 +50,11 @@ public class AccountController {
     @RequestMapping(method = RequestMethod.GET, value = "/phone/{phone}")
     public String getAccountByPhone(@PathVariable String phone) {
         return accountService.getAccountByPhone(phone);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void signUp(@RequestBody SignUpVO signUpVO) {
+        accountService.signUp(signUpVO.getAccount(), signUpVO.getUser());
     }
 }

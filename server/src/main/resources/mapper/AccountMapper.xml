@@ -5,14 +5,52 @@
 <mapper namespace="com.laquanquan.personnel_salary.mapper.AccountMapper">
 
     <resultMap id="BaseResultMap" type="com.laquanquan.personnel_salary.domain.Account">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="uid" column="uid" jdbcType="VARCHAR"/>
-            <result property="username" column="username" jdbcType="VARCHAR"/>
-            <result property="password" column="password" jdbcType="VARCHAR"/>
-            <result property="email" column="email" jdbcType="VARCHAR"/>
-            <result property="phone" column="phone" jdbcType="VARCHAR"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-            <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="uid" column="uid" jdbcType="VARCHAR"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
     </resultMap>
+    <insert id="saveOne" parameterType="com.laquanquan.personnel_salary.domain.Account">
+        INSERT INTO `t_account`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="account.uid != null and account.uid != ''">
+                `uid`,
+            </if>
+            <if test="account.username != null and account.username != ''">
+                `username`,
+            </if>
+            <if test="account.password != null and account.password != ''">
+                `password`,
+            </if>
+            <if test="account.email != null and account.email != ''">
+                `email`,
+            </if>
+            <if test="account.phone != null and account.phone != ''">
+                `phone`,
+            </if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="account.uid != null and account.uid != ''">
+                #{account.uid},
+            </if>
+            <if test="account.username != null and account.username != ''">
+                #{account.username},
+            </if>
+            <if test="account.password != null and account.password != ''">
+                #{account.password},
+            </if>
+            <if test="account.email != null">
+                #{account.email},
+            </if>
+            <if test="account.phone != null and account.phone != ''">
+                #{account.phone},
+            </if>
+        </trim>;
+    </insert>
 </mapper>

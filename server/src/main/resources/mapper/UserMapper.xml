@@ -5,18 +5,80 @@
 <mapper namespace="com.laquanquan.personnel_salary.mapper.UserMapper">
 
     <resultMap id="BaseResultMap" type="com.laquanquan.personnel_salary.domain.User">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="uid" column="uid" jdbcType="VARCHAR"/>
-            <result property="name" column="name" jdbcType="VARCHAR"/>
-            <result property="gender" column="gender" jdbcType="CHAR"/>
-            <result property="birthday" column="birthday" jdbcType="DATE"/>
-            <result property="induction" column="induction" jdbcType="DATE"/>
-            <result property="department" column="department" jdbcType="VARCHAR"/>
-            <result property="role" column="role" jdbcType="VARCHAR"/>
-            <result property="isMarried" column="is_married" jdbcType="TINYINT"/>
-            <result property="resume" column="resume" jdbcType="VARCHAR"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-            <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="uid" column="uid" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="gender" column="gender" jdbcType="CHAR"/>
+        <result property="birthday" column="birthday" jdbcType="DATE"/>
+        <result property="induction" column="induction" jdbcType="DATE"/>
+        <result property="department" column="department" jdbcType="VARCHAR"/>
+        <result property="role" column="role" jdbcType="VARCHAR"/>
+        <result property="isMarried" column="is_married" jdbcType="TINYINT"/>
+        <result property="resume" column="resume" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
     </resultMap>
+    <insert id="saveOne" parameterType="com.laquanquan.personnel_salary.domain.User">
+        INSERT INTO `t_user`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="user.uid != null and user.uid != ''">
+                `uid`,
+            </if>
+            <if test="user.name != null and user.name != ''">
+                `name`,
+            </if>
+            <if test="user.gender != null and user.gender != ''">
+                `gender`,
+            </if>
+            <if test="user.birthday != null">
+                `birthday`,
+            </if>
+            <if test="user.induction != null">
+                `induction`,
+            </if>
+            <if test="user.department != null and user.department != ''">
+                `department`,
+            </if>
+            <if test="user.role != null and user.role != ''">
+                `role`,
+            </if>
+            <if test="user.isMarried != null">
+                `is_married`,
+            </if>
+            <if test="user.resume != null and user.resume != ''">
+                `resume`,
+            </if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="user.uid != null and user.uid != ''">
+                #{user.uid},
+            </if>
+            <if test="user.name != null and user.name != ''">
+                #{user.name},
+            </if>
+            <if test="user.gender != null and user.gender != ''">
+                #{user.gender},
+            </if>
+            <if test="user.birthday != null">
+                #{user.birthday},
+            </if>
+            <if test="user.induction != null">
+                #{user.induction},
+            </if>
+            <if test="user.department != null and user.department != ''">
+                #{user.department},
+            </if>
+            <if test="user.role != null and user.role != ''">
+                #{user.role},
+            </if>
+            <if test="user.isMarried != null">
+                #{user.isMarried},
+            </if>
+            <if test="user.resume != null and user.resume != ''">
+                #{user.resume},
+            </if>
+        </trim>
+    </insert>
 </mapper>

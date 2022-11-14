@@ -46,6 +46,14 @@ public interface AccountMapper {
      */
     @Select("SELECT `uid`,`username`,`email`,`phone` FROM `t_account` WHERE `phone`=#{phone} AND `is_deleted`=0")
     Account selectOneByPhone(String phone);
+
+    /**
+     * 将一个用户持久化
+     *
+     * @param account 账户信息
+     * @return 影响的行数
+     */
+    int saveOne(@Param("account") Account account);
 }
 
 

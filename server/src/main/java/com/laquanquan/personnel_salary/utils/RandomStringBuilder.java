@@ -13,7 +13,15 @@ public class RandomStringBuilder {
     public static String build(int size) {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < size; i++) {
-            stringBuilder.append(BASE_STRING.charAt(RANDOM.nextInt(62)));
+            stringBuilder.append(BASE_STRING.charAt(RANDOM.nextInt(BASE_STRING.length())));
+        }
+        return stringBuilder.toString();
+    }
+
+    public static String buildInteger(int size) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < size; i++) {
+            stringBuilder.append(BASE_STRING.charAt(RANDOM.nextInt(52, BASE_STRING.length())));
         }
         return stringBuilder.toString();
     }
