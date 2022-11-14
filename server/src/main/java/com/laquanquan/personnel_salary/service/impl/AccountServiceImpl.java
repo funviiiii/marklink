@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.sql.SQLDataException;
-import java.sql.SQLException;
 import java.util.regex.Pattern;
 
 /**
@@ -33,10 +32,6 @@ public class AccountServiceImpl implements AccountService {
     private UserMapper userMapper;
 
     private static final Pattern ACCOUNT_REG = Pattern.compile("^[\\w.]{6,16}$");
-
-    private static final Pattern EMAIL_REG = Pattern.compile("^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$");
-
-    private static final Pattern PHONE_REG = Pattern.compile("(^(13[0-9]|14[57]|15[0-35-9]|18[0-35-9])\\d{8}$)");
 
     @Override
     public String getAccountById(String uid) {

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.sql.SQLDataException;
 
 /**
  * @author lqq
@@ -54,7 +55,7 @@ public class AccountController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void signUp(@RequestBody SignUpVO signUpVO) {
+    public void signUp(@RequestBody SignUpVO signUpVO) throws SQLDataException {
         accountService.signUp(signUpVO.getAccount(), signUpVO.getUser());
     }
 }

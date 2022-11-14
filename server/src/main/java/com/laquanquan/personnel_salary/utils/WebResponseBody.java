@@ -16,9 +16,11 @@ import lombok.*;
 @EqualsAndHashCode
 public class WebResponseBody<T> {
     @JsonProperty
-    private String statusCode;
-    @JsonProperty
     private String statusMsg;
     @JsonProperty
-    private T contentValue;
+    private T contentValue = null;
+
+    public WebResponseBody(String statusMsg) {
+        this.statusMsg = statusMsg;
+    }
 }

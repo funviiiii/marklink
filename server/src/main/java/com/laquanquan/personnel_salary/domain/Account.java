@@ -3,6 +3,8 @@ package com.laquanquan.personnel_salary.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,7 +21,7 @@ public class Account implements Serializable {
     /**
      * 主键
      */
-    @JsonProperty
+    @JsonIgnore
     private Long id;
 
     /**
@@ -55,19 +57,19 @@ public class Account implements Serializable {
     /**
      * 创建时间
      */
-    @JsonProperty
+    @JsonIgnore
     private Date createTime;
 
     /**
      * 上次更新时间
      */
-    @JsonProperty
+    @JsonIgnore
     private Date updateTime;
 
     /**
      * 逻辑删除标识
      */
-    @JsonProperty
+    @JsonIgnore
     private Integer isDeleted;
 
     private static final long serialVersionUID = 1L;
