@@ -17,8 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.sql.SQLDataException;
-import java.util.regex.Pattern;
-
 /**
  * @author lqq
  */
@@ -79,8 +77,14 @@ public class AccountServiceImpl implements AccountService {
         checkInfo(account);
 
         // 查询是否存在相同信息的账户
-        if (accountMapper.selectOneByUid(account.getUsername()) != null) {
+        if (accountMapper.selectOneByUsername(account.getUsername()) != null) {
             throw new AccountDuplicateException("账户已存在，请使用其他用户名");
+        }
+        if (accountMapper.selectOneByEmail(account.getEmail()) != null) {
+            throw new AccountDuplicateException("邮箱已被占用，请使用其他邮箱");
+        }
+        if (accountMapper.selectOneByPhone(account.getPhone()) != null) {
+            throw new AccountDuplicateException("手机号已被占用，请使用其他号码");
         }
 
         // 密码加密
@@ -106,7 +110,8 @@ public class AccountServiceImpl implements AccountService {
      * @param account 账户信息
      */
     private void checkInfo(Account account) {
-        if (!(RegPattern.ACCOUNT_REG.matcher(account.getUsername()).find() || !RegPattern.ACCOUNT_REG.matcher(account.getPassword()).find())) {
+        if ((!RegPattern.ACCOUNT_REG.matcher(account.getUsername()).find()) ||
+                (!RegPattern.ACCOUNT_REG.matcher(account.getPassword()).find())) {
             throw new UserInfoInvalidException("账户信息格式有误，请重试");
         }
     }
