@@ -38,7 +38,7 @@ public class SignUpVO {
     private Date birthday;
 
     @JsonProperty
-    private Integer isMarried;
+    private Integer is_married;
 
     public Account getAccount() {
         Account account = new Account();
@@ -54,7 +54,7 @@ public class SignUpVO {
         user.setName(name);
         user.setBirthday(birthday);
         user.setGender(gender);
-        user.setIsMarried(isMarried);
+        user.setIsMarried(is_married);
         return user;
     }
 }

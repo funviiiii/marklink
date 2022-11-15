@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/personnel-salary
-    username: personnel-salary
-    password: personnel-salary
+    url: jdbc:mysql://localhost:3306/personnel_salary
+    username: personnel_salary
+    password: personnel_salary
   mail:
     username: zuobiaoxi0425@163.com
     password: RUZMSVFPRFIESNSC
@@ -17,3 +17,10 @@ server:
 
 email-sender:
   from: zuobiaoxi0425@163.com(拉圈圈)
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
+logging:
+  level:
+    root: debug

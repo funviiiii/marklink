@@ -34,7 +34,6 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public String getAccountById(String uid) {
-        // 查询账户对象
         Account account = accountMapper.selectOneByUid(uid);
         if (account == null) {
             log.warn("找不到uid为 {} 的对象", uid);
@@ -47,7 +46,7 @@ public class AccountServiceImpl implements AccountService {
     public String getAccountByUsername(String username) {
         Account account = accountMapper.selectOneByUsername(username);
         if (account == null) {
-            log.warn("找不到用户名 为 {} 的对象", username);
+            log.warn("找不到用户名为 {} 的对象", username);
             throw new DataNotFoundException("找不到相应的账户");
         }
         return account.getUid();
@@ -57,7 +56,7 @@ public class AccountServiceImpl implements AccountService {
     public String getAccountByEmail(String email) {
         Account account = accountMapper.selectOneByEmail(email);
         if (account == null) {
-            log.warn("找不到邮箱 为 {} 的对象", email);
+            log.warn("找不到邮箱为 {} 的对象", email);
             throw new DataNotFoundException("找不到相应的账户");
         }
         return account.getUid();
@@ -67,7 +66,7 @@ public class AccountServiceImpl implements AccountService {
     public String getAccountByPhone(String phone) {
         Account account = accountMapper.selectOneByPhone(phone);
         if (account == null) {
-            log.warn("找不到电话号码 为 {} 的对象", phone);
+            log.warn("找不到电话号码为 {} 的对象", phone);
             throw new DataNotFoundException("找不到相应的账户");
         }
         return account.getUid();
@@ -88,7 +87,9 @@ public class AccountServiceImpl implements AccountService {
         account.setPassword(Md5Utils.encode(account.getPassword()));
 
         // 分配随机编号
-        account.setUid("uid_" + RandomStringBuilder.build(10));
+        String uid = "uid_" + RandomStringBuilder.build(10);
+        account.setUid(uid);
+        user.setUid(uid);
 
         // 持久化数据
         if (accountMapper.saveOne(account) != 1) {

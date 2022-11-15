@@ -1,6 +1,7 @@
 package com.laquanquan.personnel_salary.mapper;
 
 import com.laquanquan.personnel_salary.domain.Account;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -17,34 +18,34 @@ public interface AccountMapper {
      * @param uid 账户id
      * @return 返回账户对象
      */
-    @Select("SELECT `uid`,`username`,`email`,`phone` FROM `t_account` WHERE `uid`=#{uid} AND `is_deleted`=0")
+    @Select("SELECT `uid`,`username`,`email`,`phone` FROM `t_account` WHERE `uid`=#{uid} AND `is_deleted`=0 LIMIT 1")
     Account selectOneByUid(@Param("uid") String uid);
 
     /**
      * 根据用户名查询一个账户对象
      *
      * @param username 账户用户名
-     * @return 返回查询到的用户对象
+     * @return 返回查询到的账户对象
      */
-    @Select("SELECT `uid`,`username`,`email`,`phone` FROM `t_account` WHERE `username`=#{username} AND `is_deleted`=0")
+    @Select("SELECT `uid`,`username`,`email`,`phone` FROM `t_account` WHERE `username`=#{username} AND `is_deleted`=0 LIMIT 1")
     Account selectOneByUsername(String username);
 
     /**
      * 根据邮箱查询一个账户对象
      *
      * @param email 邮箱
-     * @return 返回查询到的用户对象
+     * @return 返回查询到的账户对象
      */
-    @Select("SELECT `uid`,`username`,`email`,`phone` FROM `t_account` WHERE `email`=#{email} AND `is_deleted`=0")
+    @Select("SELECT `uid`,`username`,`email`,`phone` FROM `t_account` WHERE `email`=#{email} AND `is_deleted`=0 LIMIT 1")
     Account selectOneByEmail(String email);
 
     /**
      * 根据手机查询一个账户对象
      *
      * @param phone 邮箱
-     * @return 返回查询到的用户对象
+     * @return 返回查询到的账户对象
      */
-    @Select("SELECT `uid`,`username`,`email`,`phone` FROM `t_account` WHERE `phone`=#{phone} AND `is_deleted`=0")
+    @Select("SELECT `uid`,`username`,`email`,`phone` FROM `t_account` WHERE `phone`=#{phone} AND `is_deleted`=0 LIMIT 1")
     Account selectOneByPhone(String phone);
 
     /**
@@ -54,6 +55,15 @@ public interface AccountMapper {
      * @return 影响的行数
      */
     int saveOne(@Param("account") Account account);
+
+    /**
+     * 根据用户编号真实的删除一条数据
+     *
+     * @param uid 用户编号
+     * @return 影响行数
+     */
+    @Delete("DELETE FROM `t_account` WHERE `uid`=#{uid} LIMIT 1")
+    int hardDeleteByUid(String uid);
 }
 
 
