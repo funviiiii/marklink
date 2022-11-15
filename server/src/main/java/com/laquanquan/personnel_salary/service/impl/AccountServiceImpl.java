@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.sql.SQLDataException;
+
 /**
  * @author lqq
  */
@@ -31,43 +32,13 @@ public class AccountServiceImpl implements AccountService {
     private UserMapper userMapper;
 
     @Override
-    public String getAccountById(String uid) {
-        Account account = accountMapper.selectOneByUid(uid);
-        if (account == null) {
-            log.warn("找不到uid为 {} 的对象", uid);
+    public String getAccount(Account account) {
+        Account tmp = accountMapper.selectOne(account);
+        if (tmp == null) {
+            log.warn("找不到相应的账户");
             throw new DataNotFoundException("找不到相应的账户");
         }
-        return uid;
-    }
-
-    @Override
-    public String getAccountByUsername(String username) {
-        Account account = accountMapper.selectOneByUsername(username);
-        if (account == null) {
-            log.warn("找不到用户名为 {} 的对象", username);
-            throw new DataNotFoundException("找不到相应的账户");
-        }
-        return account.getUid();
-    }
-
-    @Override
-    public String getAccountByEmail(String email) {
-        Account account = accountMapper.selectOneByEmail(email);
-        if (account == null) {
-            log.warn("找不到邮箱为 {} 的对象", email);
-            throw new DataNotFoundException("找不到相应的账户");
-        }
-        return account.getUid();
-    }
-
-    @Override
-    public String getAccountByPhone(String phone) {
-        Account account = accountMapper.selectOneByPhone(phone);
-        if (account == null) {
-            log.warn("找不到电话号码为 {} 的对象", phone);
-            throw new DataNotFoundException("找不到相应的账户");
-        }
-        return account.getUid();
+        return tmp.getUid();
     }
 
     @Override
@@ -76,14 +47,22 @@ public class AccountServiceImpl implements AccountService {
         // 对账户信息进行校验
         checkInfo(account);
 
+        Account tmp = new Account();
+
+        tmp.setUsername(account.getUsername());
+
         // 查询是否存在相同信息的账户
-        if (accountMapper.selectOneByUsername(account.getUsername()) != null) {
+        if (accountMapper.selectOne(tmp) != null) {
             throw new AccountDuplicateException("账户已存在，请使用其他用户名");
         }
-        if (accountMapper.selectOneByEmail(account.getEmail()) != null) {
+        tmp.setUsername(null);
+        tmp.setEmail(account.getEmail());
+        if (accountMapper.selectOne(tmp) != null) {
             throw new AccountDuplicateException("邮箱已被占用，请使用其他邮箱");
         }
-        if (accountMapper.selectOneByPhone(account.getPhone()) != null) {
+        tmp.setEmail(null);
+        tmp.setPhone(account.getPhone());
+        if (accountMapper.selectOne(tmp) != null) {
             throw new AccountDuplicateException("手机号已被占用，请使用其他号码");
         }
 

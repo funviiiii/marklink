@@ -43,43 +43,15 @@ class AccountServiceImplTest {
     }
 
     @Test
-    void getAccountById() {
+    void getAccount() {
         // 正常通过
-        Assertions.assertEquals(account.getUid(), accountService.getAccountById(account.getUid()));
+        Assertions.assertEquals(account.getUid(), accountService.getAccount(account));
 
-        // 用户id不存在，抛出异常
+        // 用户不存在，抛出异常
+        Account tmp = new Account();
+        tmp.setUsername(RandomStringBuilder.build(10));
         Assertions.assertThrows(DataNotFoundException.class,
-                () -> accountService.getAccountById(RandomStringBuilder.build(10)));
-    }
-
-    @Test
-    void getAccountByUsername() {
-        // 正常通过
-        Assertions.assertEquals(account.getUid(), accountService.getAccountByUsername(account.getUsername()));
-
-        // 用户名不存在，抛出异常
-        Assertions.assertThrows(DataNotFoundException.class,
-                () -> accountService.getAccountByUsername(RandomStringBuilder.build(10)));
-    }
-
-    @Test
-    void getAccountByEmail() {
-        // 正常通过
-        Assertions.assertEquals(account.getUid(), accountService.getAccountByEmail(account.getEmail()));
-
-        // 邮箱不存在，抛出异常
-        Assertions.assertThrows(DataNotFoundException.class,
-                () -> accountService.getAccountByEmail(RandomStringBuilder.build(10)));
-    }
-
-    @Test
-    void getAccountByPhone() {
-        // 正常通过
-        Assertions.assertEquals(account.getUid(), accountService.getAccountByPhone(account.getPhone()));
-
-        // 电话号码不存在，抛出异常
-        Assertions.assertThrows(DataNotFoundException.class,
-                () -> accountService.getAccountByPhone(RandomStringBuilder.build(10)));
+                () -> accountService.getAccount(tmp));
     }
 
     @Test
@@ -135,12 +107,12 @@ class AccountServiceImplTest {
 
         // 重复邮箱
         Assertions.assertThrows(AccountDuplicateException.class,
-                () -> accountService.signUp(tmpAccount, tmpUser),"邮箱已被占用，请使用其他邮箱");
+                () -> accountService.signUp(tmpAccount, tmpUser), "邮箱已被占用，请使用其他邮箱");
         tmpAccount.setEmail(RandomStringBuilder.build(10) + "@qq.com");
 
         // 重复手机号
         Assertions.assertThrows(AccountDuplicateException.class,
-                ()->accountService.signUp(tmpAccount, tmpUser),"手机号已被占用，请使用其他号码");
+                () -> accountService.signUp(tmpAccount, tmpUser), "手机号已被占用，请使用其他号码");
         tmpAccount.setPhone(RandomStringBuilder.buildInteger(11));
 
         // 注册成功

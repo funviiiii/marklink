@@ -55,42 +55,14 @@ public class AccountControllerTest {
     }
 
     @Test
-    void getAccountByUid() throws Exception {
-        RequestBuilder reqBuilder = MockMvcRequestBuilders.get("/account/uid/" + account.getUid()).contentType("application/json;charset=utf-8");
+    void getAccount() throws Exception {
+        RequestBuilder reqBuilder = MockMvcRequestBuilders.get("/account")
+                .contentType("application/json;charset=utf-8").content("{\"uid\": \"" + account.getUid() + "\"}");
         ResultActions perform = mockMvc.perform(reqBuilder);
 
         ResultMatcher matcher1 = MockMvcResultMatchers.content().string(account.getUid());
         ResultMatcher matcher2 = MockMvcResultMatchers.status().is(HttpStatus.OK.value());
         perform.andExpect(matcher1).andExpect(matcher2);
-    }
-
-    @Test
-    void getAccountByUsername() throws Exception {
-        RequestBuilder reqBuilder = MockMvcRequestBuilders.get("/account/username/" + account.getUsername()).contentType("application/json;charset=utf-8");
-        ResultActions perform = mockMvc.perform(reqBuilder);
-
-        ResultMatcher matcher1 = MockMvcResultMatchers.content().string(account.getUid());
-        ResultMatcher matcher2 = MockMvcResultMatchers.status().is(HttpStatus.OK.value());
-        perform.andExpect(matcher1).andExpect(matcher2);
-    }
-
-    @Test
-    void getAccountByEmail() throws Exception {
-        RequestBuilder reqBuilder = MockMvcRequestBuilders.get("/account/email/" + account.getEmail()).contentType("application/json;charset=utf-8");
-        ResultActions perform = mockMvc.perform(reqBuilder);
-
-        ResultMatcher matcher1 = MockMvcResultMatchers.content().string(account.getUid());
-        ResultMatcher matcher2 = MockMvcResultMatchers.status().is(HttpStatus.OK.value());
-        perform.andExpect(matcher1).andExpect(matcher2);
-    }
-
-    @Test
-    void getAccountByPhone() throws Exception {
-        RequestBuilder reqBuilder = MockMvcRequestBuilders.get("/account/phone/" + account.getPhone()).contentType("application/json;charset=utf-8");
-        ResultActions perform = mockMvc.perform(reqBuilder);
-
-        ResultMatcher matcher1 = MockMvcResultMatchers.content().string(account.getUid());
-        ResultMatcher matcher2 = MockMvcResultMatchers.status().is(HttpStatus.OK.value());
         perform.andExpect(matcher1).andExpect(matcher2);
     }
 

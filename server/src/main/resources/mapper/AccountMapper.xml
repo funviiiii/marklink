@@ -51,6 +51,26 @@
             <if test="account.phone != null and account.phone != ''">
                 #{account.phone},
             </if>
-        </trim>;
+        </trim>
+        ;
     </insert>
+    <select id="selectOne" resultMap="BaseResultMap"
+            parameterType="com.laquanquan.personnel_salary.domain.Account">
+        SELECT `uid`,`username`,`email`,`phone` FROM `t_account`
+        <where>
+            <if test="account.uid != null and account.uid != ''">
+                AND `uid`=#{account.uid}
+            </if>
+            <if test="account.username != null and account.username != ''">
+                AND `username`=#{account.username}
+            </if>
+            <if test="account.email != null and account.email != ''">
+                AND `email`=#{account.email}
+            </if>
+            <if test="account.phone != null and account.phone != ''">
+                AND `phone`=#{account.phone}
+            </if>
+        </where>
+        ;
+    </select>
 </mapper>
