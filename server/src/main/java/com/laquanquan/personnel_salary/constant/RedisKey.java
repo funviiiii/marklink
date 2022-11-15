@@ -5,5 +5,5 @@ package com.laquanquan.personnel_salary.constant;
  */
 public class RedisKey {
 
-    public static final String VERIFICATION_CODE_KEY = "verifyCode:email";
+    public static final String VERIFICATION_CODE_KEY = "verifyCode:email:";
 }
