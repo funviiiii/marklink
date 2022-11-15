@@ -39,4 +39,8 @@ public class AccountController {
         accountService.signUp(signUpVO.getAccount(), signUpVO.getUser());
         return new WebResponseBody<>("注册成功");
     }
+
+    public WebResponseBody<String> signIn(@RequestBody Account account) {
+        return accountService.signIn(account);
+    }
 }

@@ -25,7 +25,7 @@ public class TokenBuilder {
                 .setIssuer("zuobiaoxi")
                 .addClaims(payload)
                 .setExpiration(new Date(System.currentTimeMillis() + (HOUR * expireHours)))
-                .setSubject("reality:token")
+                .setSubject("salary:token")
                 .compact();
     }
 
@@ -33,7 +33,7 @@ public class TokenBuilder {
         return (Map<String, Object>) Jwts.parserBuilder()
                 .requireIssuer("zuobiaoxi")
                 .setSigningKey(PRIVATE_KEY)
-                .requireSubject("reality:token")
+                .requireSubject("salary:token")
                 .build().parse(token).getBody();
     }
 }

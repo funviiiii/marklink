@@ -125,4 +125,9 @@ class AccountServiceImplTest {
             throw new SQLDataException("清理测试数据失败");
         }
     }
+
+    @Test
+    void signIn() {
+        // TODO 登录业务测试
+    }
 }

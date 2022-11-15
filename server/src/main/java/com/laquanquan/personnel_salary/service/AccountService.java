@@ -1,8 +1,11 @@
 package com.laquanquan.personnel_salary.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.laquanquan.personnel_salary.domain.Account;
 import com.laquanquan.personnel_salary.domain.User;
+import com.laquanquan.personnel_salary.utils.WebResponseBody;
 
+import java.nio.file.AccessDeniedException;
 import java.sql.SQLDataException;
 
 /**
@@ -26,4 +29,13 @@ public interface AccountService {
      * @param user    用户信息
      */
     void signUp(Account account, User user) throws SQLDataException;
+
+
+    /**
+     * 登录业务
+     *
+     * @param account 账户对象
+     * @return 响应体
+     */
+    WebResponseBody<String> signIn(Account account) throws JsonProcessingException, AccessDeniedException;
 }

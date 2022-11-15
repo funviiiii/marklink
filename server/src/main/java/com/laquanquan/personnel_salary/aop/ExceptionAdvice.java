@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.annotation.Resource;
+import java.nio.file.AccessDeniedException;
 import java.sql.SQLDataException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -35,7 +36,7 @@ public class ExceptionAdvice {
         return new WebResponseBody<>("发生了未知的错误，请稍后重试");
     }
 
-    @ExceptionHandler({DataNotFoundException.class, SQLDataException.class})
+    @ExceptionHandler({DataNotFoundException.class, SQLDataException.class, AccessDeniedException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public WebResponseBody<String> dataNotFound(DataNotFoundException e) {
         log.warn(e.getMessage(), e);

@@ -95,6 +95,11 @@ public class AccountControllerTest {
         perform.andExpect(matcher);
     }
 
+    @Test
+    void signIn() {
+        // TODO 登录接口测试
+    }
+
     @AfterAll
     static void clear(@Autowired AccountMapper accountMapper) throws SQLDataException {
         if (accountMapper.hardDeleteByUid(account.getUid()) != 1) {

@@ -1,5 +1,7 @@
 package com.laquanquan.personnel_salary.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.laquanquan.personnel_salary.constant.RegPattern;
 import com.laquanquan.personnel_salary.domain.Account;
 import com.laquanquan.personnel_salary.domain.User;
@@ -11,12 +13,17 @@ import com.laquanquan.personnel_salary.mapper.UserMapper;
 import com.laquanquan.personnel_salary.service.AccountService;
 import com.laquanquan.personnel_salary.utils.Md5Utils;
 import com.laquanquan.personnel_salary.utils.RandomStringBuilder;
+import com.laquanquan.personnel_salary.utils.TokenBuilder;
+import com.laquanquan.personnel_salary.utils.WebResponseBody;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.nio.file.AccessDeniedException;
 import java.sql.SQLDataException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author lqq
@@ -31,6 +38,9 @@ public class AccountServiceImpl implements AccountService {
     @Resource
     private UserMapper userMapper;
 
+    @Resource
+    private ObjectMapper objectMapper;
+
     @Override
     public String getAccount(Account account) {
         Account tmp = accountMapper.selectOne(account);
@@ -40,6 +50,7 @@ public class AccountServiceImpl implements AccountService {
         }
         return tmp.getUid();
     }
+
 
     @Override
     @Transactional(rollbackFor = {Exception.class})
@@ -81,6 +92,37 @@ public class AccountServiceImpl implements AccountService {
         if (userMapper.saveOne(user) != 1) {
             throw new SQLDataException("SQL执行过程出现异常");
         }
+    }
+
+    @Override
+    public WebResponseBody<String> signIn(Account account) throws JsonProcessingException, AccessDeniedException {
+        // 校验账户信息格式是否正确
+        checkInfo(account);
+
+        // 深拷贝并将密码设置为空，方便查询
+        Account tmp = objectMapper.readValue(objectMapper.writeValueAsString(account), Account.class);
+        tmp.setPassword(null);
+
+        // 查询是否存在该账户
+        if (accountMapper.selectOne(tmp) == null) {
+            throw new DataNotFoundException("不存在该用户，请检查用户名是否正确!");
+        }
+
+        // 密码加密后进行校验
+        account.setPassword(Md5Utils.encode(account.getPassword()));
+        if (accountMapper.selectOne(account) == null) {
+            // 返回空，密码不正确
+            throw new AccessDeniedException("密码错误！不允许访问");
+        }
+
+        // 密码正确，构造token并返回
+        // token包含的信息内容: 用户id
+        Map<String, Object> payload = new HashMap<>(1);
+        payload.put("uid", account.getUid());
+
+        String token = TokenBuilder.build(payload, 24 * 7);
+
+        return new WebResponseBody<>("登录成功", token);
     }
 
     /**

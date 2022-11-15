@@ -70,7 +70,8 @@
             <if test="account.phone != null and account.phone != ''">
                 AND `phone`=#{account.phone}
             </if>
+            AND `is_deleted`=0
         </where>
-        ;
+        LIMIT 1;
     </select>
 </mapper>
