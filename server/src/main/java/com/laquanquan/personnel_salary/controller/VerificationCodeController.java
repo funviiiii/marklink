@@ -46,17 +46,22 @@ public class VerificationCodeController {
             throw new UserInfoInvalidException("邮箱地址格式不正确");
         }
 
-        // 创建验证码
-        String verificationCode = RandomStringBuilder.buildInteger(6);
 
-        // 将创建好的验证码放入Redis存储
+        // 将验证码放入Redis存储
         // 这里使用线程池递交任务，避免由于Redis连接慢导致响应速度过慢
-        executorService.submit(() -> stringRedisTemplate.opsForValue()
-                .set(RedisKey.VERIFICATION_CODE_KEY + email, verificationCode, 5, TimeUnit.MINUTES));
+        executorService.execute(() -> {
+            // 如果查询到的code为空说明该用户没请求过验证码，需要先生成再发送给用户
+            String verificationCode = stringRedisTemplate.opsForValue().get(RedisKey.VERIFICATION_CODE_KEY + email);
+            if (verificationCode == null) {
+                // 创建验证码
+                verificationCode = RandomStringBuilder.buildInteger(6);
+                stringRedisTemplate.opsForValue()
+                        .set(RedisKey.VERIFICATION_CODE_KEY + email, verificationCode, 5, TimeUnit.MINUTES);
+            }
+            // 发送验证码
+            emailSender.send(email, SUBJECT, CONTENT_PREFIX + verificationCode + CONTENT_SUFFIX);
+        });
 
-
-        // 发送验证码
-        emailSender.send(email, SUBJECT, CONTENT_PREFIX + verificationCode + CONTENT_SUFFIX);
 
         return new WebResponseBody<>("验证码发送成功");
     }
