@@ -31,7 +31,6 @@
                 clearable
                 type="password"
                 maxlength="16"
-                show-password
                 class="el-col-10"
       ></el-input>
     </el-form-item>
@@ -66,8 +65,12 @@ const usernameAndPwdChecker = (rule, value, callback) => {
 }
 
 const rules = reactive({
-  username: [{validator: usernameAndPwdChecker, trigger: "blur"}],
-  password: [{validator: usernameAndPwdChecker, trigger: "blur"}],
+  username: [
+    {validator: usernameAndPwdChecker, trigger: "blur"},
+  ],
+  password: [
+    {validator: usernameAndPwdChecker, trigger: "blur"},
+  ],
   checkPassword: [
     {
       validator: (rule, value, callback) => {
@@ -78,7 +81,7 @@ const rules = reactive({
         }
       },
       trigger: "blur"
-    }
+    },
   ]
 })
 

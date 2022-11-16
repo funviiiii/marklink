@@ -13,7 +13,9 @@ spring:
     host: 192.168.56.101
 server:
   servlet:
-    context-path: /reality
+    context-path: /personnel
+  port: 45678
+
 
 email-sender:
   from: zuobiaoxi0425@163.com(拉圈圈)

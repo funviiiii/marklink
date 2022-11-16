@@ -1,5 +1,6 @@
 package com.laquanquan.personnel_salary.aop;
 
+import com.laquanquan.personnel_salary.exception.AccountDuplicateException;
 import com.laquanquan.personnel_salary.exception.DataNotFoundException;
 import com.laquanquan.personnel_salary.utils.EmailSender;
 import com.laquanquan.personnel_salary.utils.WebResponseBody;
@@ -36,9 +37,15 @@ public class ExceptionAdvice {
         return new WebResponseBody<>("发生了未知的错误，请稍后重试");
     }
 
-    @ExceptionHandler({DataNotFoundException.class, SQLDataException.class, AccessDeniedException.class})
+    @ExceptionHandler({
+            DataNotFoundException.class,
+            SQLDataException.class,
+            AccessDeniedException.class,
+            AccountDuplicateException.class,
+            IllegalArgumentException.class
+    })
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public WebResponseBody<String> dataNotFound(DataNotFoundException e) {
+    public WebResponseBody<String> ownException(Exception e) {
         log.warn(e.getMessage(), e);
         return new WebResponseBody<>(e.getMessage());
     }

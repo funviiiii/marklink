@@ -53,7 +53,6 @@ public class AccountServiceImpl implements AccountService {
 
 
     @Override
-    @Transactional(rollbackFor = {Exception.class})
     public void signUp(Account account, User user) throws SQLDataException {
         // 对账户信息进行校验
         checkInfo(account);
@@ -66,12 +65,14 @@ public class AccountServiceImpl implements AccountService {
         if (accountMapper.selectOne(tmp) != null) {
             throw new AccountDuplicateException("账户已存在，请使用其他用户名");
         }
-        tmp.setUsername(null);
-        tmp.setEmail(account.getEmail());
-        if (accountMapper.selectOne(tmp) != null) {
-            throw new AccountDuplicateException("邮箱已被占用，请使用其他邮箱");
+        if (account.getEmail() != null) {
+            tmp.setUsername(null);
+            tmp.setEmail(account.getEmail());
+            if (accountMapper.selectOne(tmp) != null) {
+                throw new AccountDuplicateException("邮箱已被占用，请使用其他邮箱");
+            }
+            tmp.setEmail(null);
         }
-        tmp.setEmail(null);
         tmp.setPhone(account.getPhone());
         if (accountMapper.selectOne(tmp) != null) {
             throw new AccountDuplicateException("手机号已被占用，请使用其他号码");
@@ -85,6 +86,9 @@ public class AccountServiceImpl implements AccountService {
         account.setUid(uid);
         user.setUid(uid);
 
+        // 数据转化为数据库格式
+        formatData(user);
+
         // 持久化数据
         if (accountMapper.saveOne(account) != 1) {
             throw new SQLDataException("SQL执行过程出现异常");
@@ -92,6 +96,15 @@ public class AccountServiceImpl implements AccountService {
         if (userMapper.saveOne(user) != 1) {
             throw new SQLDataException("SQL执行过程出现异常");
         }
+    }
+
+    private void formatData(User user) {
+        user.setGender(switch (user.getGender()) {
+            case "男" -> "m";
+            case "女" -> "f";
+            case "保密" -> "s";
+            default -> throw new IllegalArgumentException("Gender的值不合法");
+        });
     }
 
     @Override

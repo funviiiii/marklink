@@ -28,9 +28,6 @@ public class VerificationCodeController {
     @Resource
     private StringRedisTemplate stringRedisTemplate;
 
-    @Resource(name = "redisExecutor")
-    private ExecutorService executorService;
-
     private static final String SUBJECT = "人事工资管理系统";
 
     private static final String CONTENT_PREFIX = "您的邮箱验证码为：\n";
@@ -39,8 +36,8 @@ public class VerificationCodeController {
 
 
     @ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping("/{email}")
-    public WebResponseBody<String> getVerificationCode(@PathVariable String email) {
+    @GetMapping
+    public WebResponseBody<String> getVerificationCode(@RequestParam String email) {
         // 校验邮箱地址正确性
         if (!RegPattern.EMAIL_REG.matcher(email).find()) {
             throw new UserInfoInvalidException("邮箱地址格式不正确");
@@ -48,19 +45,16 @@ public class VerificationCodeController {
 
 
         // 将验证码放入Redis存储
-        // 这里使用线程池递交任务，避免由于Redis连接慢导致响应速度过慢
-        executorService.execute(() -> {
-            // 如果查询到的code为空说明该用户没请求过验证码，需要先生成再发送给用户
-            String verificationCode = stringRedisTemplate.opsForValue().get(RedisKey.VERIFICATION_CODE_KEY + email);
-            if (verificationCode == null) {
-                // 创建验证码
-                verificationCode = RandomStringBuilder.buildInteger(6);
-                stringRedisTemplate.opsForValue()
-                        .set(RedisKey.VERIFICATION_CODE_KEY + email, verificationCode, 5, TimeUnit.MINUTES);
-            }
-            // 发送验证码
-            emailSender.send(email, SUBJECT, CONTENT_PREFIX + verificationCode + CONTENT_SUFFIX);
-        });
+        // 如果查询到的code为空说明该用户没请求过验证码，需要先生成再发送给用户
+        String verificationCode = stringRedisTemplate.opsForValue().get(RedisKey.VERIFICATION_CODE_KEY + email);
+        if (verificationCode == null) {
+            // 创建验证码
+            verificationCode = RandomStringBuilder.buildInteger(6);
+            stringRedisTemplate.opsForValue()
+                    .set(RedisKey.VERIFICATION_CODE_KEY + email, verificationCode, 5, TimeUnit.MINUTES);
+        }
+        // 发送验证码
+        emailSender.send(email, SUBJECT, CONTENT_PREFIX + verificationCode + CONTENT_SUFFIX);
 
 
         return new WebResponseBody<>("验证码发送成功");

@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Configuration
 public class ThreadPoolBean {
 
-    @Bean(name = "redisExecutor")
+    @Bean(name = "EmailExecutor")
     public ExecutorService get() {
         // 创建线程池
         return new ThreadPoolExecutor(5, 10, 5
@@ -22,7 +22,7 @@ public class ThreadPoolBean {
             @Override
             public Thread newThread(Runnable r) {
                 // 自定义命名
-                return new Thread(r, "Redis-Handler-" + atomicInteger.getAndIncrement());
+                return new Thread(r, "Email-Handler-" + atomicInteger.getAndIncrement());
             }
         });
     }

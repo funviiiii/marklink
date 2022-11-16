@@ -28,13 +28,14 @@
     >
       <el-date-picker
           v-model="user.birthday"
-          value-format="YYYY-M-D"
+          value-format="YYYY-MM-DD"
       >
       </el-date-picker>
     </el-form-item>
     <el-checkbox
         label="是否已婚"
         class="el-col-offset-4"
+        v-model="user.is_married"
     ></el-checkbox>
   </el-form>
 </template>
@@ -52,7 +53,12 @@ const user = reactive({
 let emit = defineEmits(["report-data"]);
 
 watch(user, () => {
-  emit("report-data", user)
+  emit("report-data", {
+    name: user.name,
+    gender: user.gender,
+    birthday: user.birthday,
+    isMarried: user.is_married ? 1 : 0
+  })
 })
 </script>
 

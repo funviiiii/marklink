@@ -9,10 +9,12 @@
               v-model="account.email"
               clearable
               class="el-col-10"
+              placeholder="选填"
+              @blur="checkEmail"
           >
           </el-input>
         </el-form-item>
-        <el-form-item label="验证码：" :error="errMsg.code">
+        <el-form-item label="验证码：" :error="errMsg.code" :class="{'code-hidden': account.email === ''}">
           <el-input
               class="el-col-10"
               v-model="account.verificationCode"
@@ -56,6 +58,8 @@ import InfoForm from "./InfoForm.vue";
 import {reactive, ref} from "vue";
 import axios from "../utils/axios";
 import {ElMessage, ElNotification} from "element-plus";
+import {useRouter} from "vue-router";
+import {router} from "../router/router.js";
 
 const reg = {
   email: /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,
@@ -81,6 +85,21 @@ const errMsg = reactive({
   code: ""
 })
 
+function getVerificationCode() {
+  axios({
+    method: "GET",
+    url: `/email?email=${account.email}`,
+  }).then(res => {
+    if (res.status === 201) {
+      ElNotification.success("获取验证码成功");
+    } else {
+      ElNotification.warning("获取验证码失败，请重试");
+    }
+  }).catch(() => {
+    ElNotification.warning("获取验证码失败，请重试");
+  })
+}
+
 function updateUserValue(userData) {
   user.name = userData.name;
   user.gender = userData.gender;
@@ -93,16 +112,26 @@ function updateAccountValue(accountData) {
   account.password = accountData.password;
 }
 
-const getVerificationCode = () => {
+const checkEmail = () => {
+  if (account.email === "") {
+    errMsg.email = "";
+    return
+  }
   if (!reg.email.test(account.email)) {
     errMsg.email = "邮箱格式有误，请重新输入"
     return;
   } else {
     errMsg.email = "";
   }
+
+
+  // 查询是否存在相同邮箱
   axios({
-    method: "GET",
-    url: `/account/email/${account.email}`,
+    method: "POST",
+    url: `/account/get`,
+    data: {
+      email: account.email
+    }
   }).then(res => {
     if (res.status === 200) {
       errMsg.email = "当前邮箱已存在，请更换邮箱地址!";
@@ -132,11 +161,12 @@ function checkInfo() {
     delete tmp.email;
     delete tmp.verificationCode;
   }
+  return tmp;
 }
 
 function signUp() {
   let info = checkInfo();
-  if (info === null) {
+  if (info === null || info === undefined) {
     return
   }
 
@@ -144,7 +174,7 @@ function signUp() {
   info["name"] = user.name;
   info["gender"] = user.gender;
   info["birthday"] = user.birthday;
-  info["isMarried"] = user.isMarried;
+  info["isMarried"] = user.isMarried ? 1 : 0;
 
   // 注册请求
   axios({
@@ -152,12 +182,16 @@ function signUp() {
     method: "POST",
     data: info
   }).then(res => {
-    if (res.status === 200) {
+    if (res.status === 201) {
       ElNotification({
         title: "成功！",
         message: "恭喜你，注册成功",
         type: "success",
       })
+      router.push({path: "/index"})
+          // 不对Promise对象进行处理无法正常跳转
+          .then(res => console.log(res))
+          .catch(res => console.log(res))
     } else {
       ElNotification({
         title: "错误！",
@@ -179,5 +213,9 @@ function signUp() {
 .sign-in-link {
   text-align: center;
   font-size: small;
+}
+
+.code-hidden {
+  display: none;
 }
 </style>

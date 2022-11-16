@@ -26,6 +26,9 @@ public class SignUpVO {
     private String email;
 
     @JsonProperty
+    private String verificationCode;
+
+    @JsonProperty
     private String phone;
 
     @JsonProperty
@@ -38,7 +41,7 @@ public class SignUpVO {
     private Date birthday;
 
     @JsonProperty
-    private Integer is_married;
+    private Integer isMarried;
 
     public Account getAccount() {
         Account account = new Account();
@@ -54,7 +57,7 @@ public class SignUpVO {
         user.setName(name);
         user.setBirthday(birthday);
         user.setGender(gender);
-        user.setIsMarried(is_married);
+        user.setIsMarried(isMarried);
         return user;
     }
 }
