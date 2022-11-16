@@ -125,7 +125,7 @@ public class AccountServiceImpl implements AccountService {
         account.setPassword(Md5Utils.encode(account.getPassword()));
         if (accountMapper.selectOne(account) == null) {
             // 返回空，密码不正确
-            throw new AccessDeniedException("密码错误！不允许访问");
+            throw new AccessDeniedException("密码错误！请重试！");
         }
 
         // 密码正确，构造token并返回

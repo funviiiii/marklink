@@ -35,6 +35,7 @@ public interface AccountService {
      * 登录业务
      *
      * @param account 账户对象
+     * @throws AccessDeniedException 若登录信息有误，则会出现访问限制异常
      * @return 响应体
      */
     WebResponseBody<String> signIn(Account account) throws JsonProcessingException, AccessDeniedException;

@@ -2,6 +2,7 @@ package com.laquanquan.personnel_salary.aop;
 
 import com.laquanquan.personnel_salary.exception.AccountDuplicateException;
 import com.laquanquan.personnel_salary.exception.DataNotFoundException;
+import com.laquanquan.personnel_salary.exception.UserInfoInvalidException;
 import com.laquanquan.personnel_salary.utils.EmailSender;
 import com.laquanquan.personnel_salary.utils.WebResponseBody;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +43,8 @@ public class ExceptionAdvice {
             SQLDataException.class,
             AccessDeniedException.class,
             AccountDuplicateException.class,
-            IllegalArgumentException.class
+            IllegalArgumentException.class,
+            UserInfoInvalidException.class
     })
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public WebResponseBody<String> ownException(Exception e) {

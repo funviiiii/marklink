@@ -30,18 +30,13 @@ public class AccountController {
     private StringRedisTemplate stringRedisTemplate;
 
     /**
-     * 查询一个用户
+     * 注册控制器
      *
-     * @param account 用户对象
-     * @return 返回一个uid，若没有查询到则返回空
+     * @param signUpVO 注册数据对象，承载前端数据
+     * @return 响应体
+     * @throws SQLDataException 若填入表时出错则抛出该异常
+     * @throws AccessDeniedException 若邮箱验证码不通过，则抛出该异常
      */
-    @ResponseBody
-    @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/get")
-    public String getAccount(@RequestBody Account account) {
-        return accountService.getAccount(account);
-    }
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public WebResponseBody<String> signUp(@RequestBody SignUpVO signUpVO) throws SQLDataException, AccessDeniedException {
@@ -52,6 +47,27 @@ public class AccountController {
         return new WebResponseBody<>("注册成功");
     }
 
+    /**
+     * 查询一个用户
+     *
+     * @param account 用户对象
+     * @return 返回一个uid，若没有查询到则返回空
+     */
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(value = "/get", method = RequestMethod.POST)
+    public String getAccount(@RequestBody Account account) {
+        return accountService.getAccount(account);
+    }
+
+
+    /**
+     * 校验邮箱和验证码是否正确
+     *
+     * @param email 邮箱
+     * @param verificationCode 验证码
+     * @throws AccessDeniedException 若信息不正确，则抛出访问限制异常
+     */
     private void checkVerifyCode(String email, String verificationCode) throws AccessDeniedException {
         if (verificationCode != null) {
             if (!Objects.equals(stringRedisTemplate.opsForValue().get(RedisKey.VERIFICATION_CODE_KEY + email), verificationCode)) {
@@ -62,6 +78,15 @@ public class AccountController {
         }
     }
 
+    /**
+     * 登录控制器
+     *
+     * @param account 账户信息
+     * @return 响应体
+     * @throws AccessDeniedException 若信息有误，抛出访问限制异常
+     * @throws JsonProcessingException 若对象映射不正确，则抛出Json转换异常
+     */
+    @PostMapping("/signin")
     public WebResponseBody<String> signIn(@RequestBody Account account) throws AccessDeniedException, JsonProcessingException {
         return accountService.signIn(account);
     }

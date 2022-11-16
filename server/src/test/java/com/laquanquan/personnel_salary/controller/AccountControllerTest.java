@@ -1,10 +1,12 @@
 package com.laquanquan.personnel_salary.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.laquanquan.personnel_salary.domain.Account;
 import com.laquanquan.personnel_salary.mapper.AccountMapper;
 import com.laquanquan.personnel_salary.utils.Md5Utils;
 import com.laquanquan.personnel_salary.utils.RandomStringBuilder;
+import com.laquanquan.personnel_salary.utils.WebResponseBody;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -42,12 +44,15 @@ public class AccountControllerTest {
 
     private static Account account;
 
+    private static String realPassword;
+
     @BeforeAll
     static void init(@Autowired AccountMapper accountMapper) {
         Account account = new Account();
         account.setUid(RandomStringBuilder.build(10));
         account.setUsername(RandomStringBuilder.build(10));
-        account.setPassword(Md5Utils.encode(RandomStringBuilder.build(10)));
+        realPassword = RandomStringBuilder.build(10);
+        account.setPassword(Md5Utils.encode(realPassword));
         account.setEmail(RandomStringBuilder.build(10) + "@qq.com");
         account.setPhone(RandomStringBuilder.buildInteger(11));
         AccountControllerTest.account = account;
@@ -96,8 +101,36 @@ public class AccountControllerTest {
     }
 
     @Test
-    void signIn() {
-        // TODO 登录接口测试
+    void signIn() throws Exception {
+        // 初始化数据
+        Account tmp = new Account();
+        // 1. 账号不正确
+        tmp.setUsername(RandomStringBuilder.build(10));
+        tmp.setPassword(RandomStringBuilder.build(10));
+        RequestBuilder builder1 = MockMvcRequestBuilders.post("/account/signin")
+                .contentType("application/json;charset=utf-8").content(objectMapper.writeValueAsString(tmp));
+        ResultActions perform1 = mockMvc.perform(builder1);
+        ResultMatcher status1 = MockMvcResultMatchers.status().isNotFound();
+        ResultMatcher result1 = MockMvcResultMatchers.content()
+                .json(objectMapper.writeValueAsString(new WebResponseBody<String>("不存在该用户，请检查用户名是否正确!")));
+        perform1.andExpect(status1).andExpect(result1);
+
+        // 2. 密码不正确
+        tmp.setUsername(account.getUsername());
+        RequestBuilder builder2 = MockMvcRequestBuilders.post("/account/signin")
+                .contentType("application/json;charset=utf-8").content(objectMapper.writeValueAsString(tmp));
+        ResultActions perform2 = mockMvc.perform(builder2);
+        ResultMatcher status2 = MockMvcResultMatchers.status().isNotFound();
+        ResultMatcher result2 = MockMvcResultMatchers.content()
+                .json(objectMapper.writeValueAsString(new WebResponseBody<String>("密码错误！请重试！")));
+        perform2.andExpect(status2).andExpect(result2);
+        // 3. 账号密码都正确
+        tmp.setPassword(realPassword);
+        RequestBuilder builder3 = MockMvcRequestBuilders.post("/account/signin")
+                .contentType("application/json;charset=utf-8").content(objectMapper.writeValueAsString(tmp));
+        ResultActions perform3 = mockMvc.perform(builder3);
+        ResultMatcher status3 = MockMvcResultMatchers.status().isOk();
+        perform3.andExpect(status3);
     }
 
     @AfterAll
