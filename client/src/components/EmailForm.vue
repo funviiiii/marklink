@@ -31,7 +31,9 @@
 
 <script setup>
 
-import {reactive} from "vue";
+import {reactive, watch} from "vue";
+
+let emits = defineEmits(["report-data"]);
 
 const account = reactive({
   email: "",
@@ -58,6 +60,13 @@ const rules = {
     }, trigger: "blur"
   }]
 }
+
+watch(account, val => {
+  if (/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(account.email)
+      && /[\w.]{6,16}/.test(account.password)) {
+    emits('report-data', val);
+  }
+})
 
 </script>
 

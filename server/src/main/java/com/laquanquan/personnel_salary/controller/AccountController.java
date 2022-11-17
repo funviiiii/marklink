@@ -87,6 +87,7 @@ public class AccountController {
      * @throws JsonProcessingException 若对象映射不正确，则抛出Json转换异常
      */
     @PostMapping("/signin")
+    @ResponseStatus(HttpStatus.OK)
     public WebResponseBody<String> signIn(@RequestBody Account account) throws AccessDeniedException, JsonProcessingException {
         return accountService.signIn(account);
     }

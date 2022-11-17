@@ -62,8 +62,11 @@ const rules = reactive({
   ],
 })
 
-watch(account, () => {
-  emit("report-data", account)
+watch(account, val => {
+  if (regs.username_pwd.test(account.username) &&
+      regs.username_pwd.test(account.password)) {
+    emit("report-data", val)
+  }
 })
 </script>
 
