@@ -4,6 +4,17 @@
       <el-divider content-position="left"><h2>账户信息</h2></el-divider>
       <br>
       <account-form @report-data="updateAccountValue">
+        <el-form-item label="确认密码："
+                      @blur="checkPassword"
+                      required
+        >
+          <el-input v-model="account.checkPassword"
+                    clearable
+                    type="password"
+                    maxlength="16"
+                    class="el-col-10"
+          ></el-input>
+        </el-form-item>
         <el-form-item label="邮箱地址：" :error="errMsg.email">
           <el-input
               v-model="account.email"
@@ -58,7 +69,6 @@ import InfoForm from "./InfoForm.vue";
 import {reactive, ref} from "vue";
 import axios from "../utils/axios";
 import {ElMessage, ElNotification} from "element-plus";
-import {useRouter} from "vue-router";
 import {router} from "../router/router.js";
 
 const reg = {
@@ -66,9 +76,15 @@ const reg = {
   username_pwd: /[\w.]{6,16}/,
 }
 
+function checkPassword() {
+  if (account.checkPassword === account.password) {
+  }
+}
+
 const account = reactive({
   username: "",
   password: "",
+  checkPassword: "",
   email: "",
   verificationCode: ""
 })

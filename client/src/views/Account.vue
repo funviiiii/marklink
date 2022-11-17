@@ -8,6 +8,7 @@
           <sign-up-form></sign-up-form>
         </el-tab-pane>
         <el-tab-pane label="登录">
+          <sign-in-form></sign-in-form>
         </el-tab-pane>
       </el-tabs>
     </el-main>
@@ -16,6 +17,7 @@
 
 <script setup>
 import SignUpForm from "../components/SignUpForm.vue";
+import SignInForm from "../components/SignInForm.vue";
 </script>
 
 <style scoped>

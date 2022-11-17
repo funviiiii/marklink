@@ -26,14 +26,6 @@
                 class="el-col-10"
       ></el-input>
     </el-form-item>
-    <el-form-item label="确认密码：" prop="checkPassword" required>
-      <el-input v-model="account.checkPassword"
-                clearable
-                type="password"
-                maxlength="16"
-                class="el-col-10"
-      ></el-input>
-    </el-form-item>
     <slot></slot>
   </el-form>
 </template>
@@ -47,9 +39,6 @@ const emit = defineEmits(["report-data"])
 const account = reactive({
   username: "",
   password: "",
-  checkPassword: "",
-  email: "",
-  verificationCode: ""
 })
 
 const regs = {
@@ -71,24 +60,10 @@ const rules = reactive({
   password: [
     {validator: usernameAndPwdChecker, trigger: "blur"},
   ],
-  checkPassword: [
-    {
-      validator: (rule, value, callback) => {
-        if (value !== account.password || value === "" || value === null) {
-          callback(new Error("你的输入和原来的密码不一致"))
-        } else {
-          callback()
-        }
-      },
-      trigger: "blur"
-    },
-  ]
 })
 
 watch(account, () => {
-  if (account.checkPassword === account.password) {
-    emit("report-data", account)
-  }
+  emit("report-data", account)
 })
 </script>
 
