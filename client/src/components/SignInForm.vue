@@ -59,6 +59,8 @@ function signIn() {
     }).then(res => {
       if (res.status === 200) {
         ElNotification.success("登录成功！");
+        // 保存token
+        localStorage.setItem("token", res.data["data"]);
         router.push("/index");
       } else {
         ElNotification.success("登录失败，请检查信息是否有误！");
