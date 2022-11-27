@@ -108,7 +108,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public WebResponseBody<String> signIn(Account account) throws JsonProcessingException, AccessDeniedException {
+    public WebResponseBody<String> login(Account account) throws JsonProcessingException, AccessDeniedException {
         // 校验账户信息格式是否正确
         checkInfo(account);
 

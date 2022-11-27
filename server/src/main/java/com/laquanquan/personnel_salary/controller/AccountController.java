@@ -6,7 +6,6 @@ import com.laquanquan.personnel_salary.domain.Account;
 import com.laquanquan.personnel_salary.service.AccountService;
 import com.laquanquan.personnel_salary.utils.WebResponseBody;
 import com.laquanquan.personnel_salary.vo.SignUpVO;
-import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -86,9 +85,9 @@ public class AccountController {
      * @throws AccessDeniedException 若信息有误，抛出访问限制异常
      * @throws JsonProcessingException 若对象映射不正确，则抛出Json转换异常
      */
-    @PostMapping("/signin")
+    @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
-    public WebResponseBody<String> signIn(@RequestBody Account account) throws AccessDeniedException, JsonProcessingException {
-        return accountService.signIn(account);
+    public WebResponseBody<String> login(@RequestBody Account account) throws AccessDeniedException, JsonProcessingException {
+        return accountService.login(account);
     }
 }

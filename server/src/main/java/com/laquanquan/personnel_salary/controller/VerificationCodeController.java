@@ -51,7 +51,7 @@ public class VerificationCodeController {
             // 创建验证码
             verificationCode = RandomStringBuilder.buildInteger(6);
             stringRedisTemplate.opsForValue()
-                    .set(RedisKey.VERIFICATION_CODE_KEY + email, verificationCode, 5, TimeUnit.MINUTES);
+                    .set(RedisKey.VERIFICATION_CODE_KEY + email, verificationCode, 6, TimeUnit.MINUTES);
         }
         // 发送验证码
         emailSender.send(email, SUBJECT, CONTENT_PREFIX + verificationCode + CONTENT_SUFFIX);

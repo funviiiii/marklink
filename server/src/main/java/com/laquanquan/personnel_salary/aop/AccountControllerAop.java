@@ -1,6 +1,5 @@
 package com.laquanquan.personnel_salary.aop;
 
-import com.laquanquan.personnel_salary.controller.AccountController;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;

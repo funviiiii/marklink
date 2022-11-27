@@ -18,7 +18,7 @@ public class WebResponseBody<T> {
     @JsonProperty
     private String msg;
     @JsonProperty
-    private T contentValue = null;
+    private T content = null;
 
     public WebResponseBody(String msg) {
         this.msg = msg;

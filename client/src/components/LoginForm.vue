@@ -53,14 +53,14 @@ function signIn() {
     ElNotification.warning("你的输入有误，请检查输入后重试");
   } else {
     axios({
-      url: "/account/signin",
+      url: "/account/login",
       method: "post",
       data: formData
     }).then(res => {
       if (res.status === 200) {
         ElNotification.success("登录成功！");
         // 保存token
-        localStorage.setItem("token", res.data["data"]);
+        localStorage.setItem("token", res.data["content"]);
         router.push("/index");
       } else {
         ElNotification.success("登录失败，请检查信息是否有误！");

@@ -17,7 +17,7 @@
 
 <script setup>
 import SignUpForm from "../components/SignUpForm.vue";
-import SignInForm from "../components/SignInForm.vue";
+import SignInForm from "../components/LoginForm.vue";
 </script>
 
 <style scoped>

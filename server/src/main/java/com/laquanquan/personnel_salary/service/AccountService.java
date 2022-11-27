@@ -27,6 +27,7 @@ public interface AccountService {
      *
      * @param account 账户信息
      * @param user    用户信息
+     * @exception SQLDataException 若校验不正确，则会抛出该异常
      */
     void signUp(Account account, User user) throws SQLDataException;
 
@@ -37,6 +38,8 @@ public interface AccountService {
      * @param account 账户对象
      * @throws AccessDeniedException 若登录信息有误，则会出现访问限制异常
      * @return 响应体
+     * @exception AccessDeniedException 若登录密码校验失败，则抛出该异常
+     * @exception JsonProcessingException Json格式不正确，该异常为服务器异常
      */
-    WebResponseBody<String> signIn(Account account) throws JsonProcessingException, AccessDeniedException;
+    WebResponseBody<String> login(Account account) throws JsonProcessingException, AccessDeniedException;
 }

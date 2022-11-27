@@ -33,7 +33,9 @@
               maxlength="6"
           >
             <template #suffix>
-              <el-link type="primary" :underline="false" @click="getVerificationCode">获取验证码</el-link>
+              <el-link type="primary" :underline="false" @click="getVerificationCode" :disabled="timeCounting !== -1">
+                {{ timeCounting !== -1 ? "可在" + timeCounting + "秒后获取" : "获取验证码" }}
+              </el-link>
             </template>
           </el-input>
         </el-form-item>
@@ -45,17 +47,12 @@
       <br>
       <el-row>
         <el-col
-            :span="7" :offset="8"
+            :span="2" :offset="11"
         >
           <el-container>
             <el-button @click="signUp">
               注册
             </el-button>
-            &nbsp;&nbsp;&nbsp;
-            <div class="sign-in-link">
-              已有账号？点此
-              <el-link :underline="false" href="/signin"><p>登录</p></el-link>
-            </div>
           </el-container>
         </el-col>
       </el-row>
@@ -66,7 +63,7 @@
 <script setup>
 import AccountForm from './AccountForm.vue'
 import InfoForm from "./InfoForm.vue";
-import {reactive, ref} from "vue";
+import {reactive, ref, watch} from "vue";
 import axios from "../utils/axios";
 import {ElMessage, ElNotification} from "element-plus";
 import {router} from "../router/router.js";
@@ -101,13 +98,32 @@ const errMsg = reactive({
   code: ""
 })
 
+const timeCounting = ref(-1);
+
+let timeCountingController;
+
+watch(timeCounting, () => {
+  if (timeCounting.value === -1) {
+    clearTimeout(timeCountingController)
+  }
+})
+
 function getVerificationCode() {
+  if (timeCounting.value !== -1) {
+    return
+  }
   axios({
     method: "GET",
     url: `/email?email=${account.email}`,
   }).then(res => {
     if (res.status === 201) {
       ElNotification.success("获取验证码成功");
+      timeCounting.value = 60;
+      timeCountingController = setInterval(() => {
+        if (timeCounting.value !== -1) {
+          timeCounting.value--;
+        }
+      }, 1000);
     } else {
       ElNotification.warning("获取验证码失败，请重试");
     }
@@ -168,6 +184,10 @@ function checkInfo() {
     ElMessage.warning("密码输入格式有误，请检查输入内容");
     return null;
   }
+  if (account.password !== account.checkPassword) {
+    ElMessage.warning("确认密码不正确，请正确输入");
+    return null;
+  }
   if (!reg.email.test(account.email) && account.email !== "") {
     ElMessage.warning("邮箱输入格式有误，请检查输入内容");
     return null;
@@ -177,6 +197,7 @@ function checkInfo() {
     delete tmp.email;
     delete tmp.verificationCode;
   }
+  delete tmp.checkPassword
   return tmp;
 }
 
