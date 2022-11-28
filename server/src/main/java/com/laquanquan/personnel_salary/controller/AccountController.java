@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.laquanquan.personnel_salary.constant.RedisKey;
 import com.laquanquan.personnel_salary.domain.Account;
 import com.laquanquan.personnel_salary.service.AccountService;
+import com.laquanquan.personnel_salary.utils.TokenBuilder;
 import com.laquanquan.personnel_salary.utils.WebResponseBody;
 import com.laquanquan.personnel_salary.vo.SignUpVO;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -33,7 +34,7 @@ public class AccountController {
      *
      * @param signUpVO 注册数据对象，承载前端数据
      * @return 响应体
-     * @throws SQLDataException 若填入表时出错则抛出该异常
+     * @throws SQLDataException      若填入表时出错则抛出该异常
      * @throws AccessDeniedException 若邮箱验证码不通过，则抛出该异常
      */
     @PostMapping
@@ -52,18 +53,31 @@ public class AccountController {
      * @param account 用户对象
      * @return 返回一个uid，若没有查询到则返回空
      */
-    @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = "/get", method = RequestMethod.POST)
     public String getAccount(@RequestBody Account account) {
         return accountService.getAccount(account);
     }
 
+    /**
+     * 根据token查询一个用户
+     *
+     * @param token 前端传来的token
+     * @return 查询到的用户的用户编号
+     */
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping
+    public String getAccount(@RequestParam String token) {
+        Account account = new Account();
+        account.setUid((String) TokenBuilder.parse(token).get("uid"));
+        return getAccount(account);
+    }
+
 
     /**
      * 校验邮箱和验证码是否正确
      *
-     * @param email 邮箱
+     * @param email            邮箱
      * @param verificationCode 验证码
      * @throws AccessDeniedException 若信息不正确，则抛出访问限制异常
      */
@@ -82,7 +96,7 @@ public class AccountController {
      *
      * @param account 账户信息
      * @return 响应体
-     * @throws AccessDeniedException 若信息有误，抛出访问限制异常
+     * @throws AccessDeniedException   若信息有误，抛出访问限制异常
      * @throws JsonProcessingException 若对象映射不正确，则抛出Json转换异常
      */
     @PostMapping("/login")
