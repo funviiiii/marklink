@@ -15,7 +15,6 @@ public interface RoleMapper {
      * @param rid 用于查询的职位编号
      * @return 返回的职位对象
      */
-    @Select("SELECT `rid`, `role_name`, `personnel_right`, `salary_right`, `info_right`, `advance_right` FROM `t_role` WHERE `rid`=#{rid}")
     Role selectByRid(String rid);
 }
 

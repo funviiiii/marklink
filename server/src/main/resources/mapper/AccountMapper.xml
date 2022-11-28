@@ -15,7 +15,7 @@
                 typeHandler="com.laquanquan.personnel_salary.typehandler.DateTypeHandler"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"
                 typeHandler="com.laquanquan.personnel_salary.typehandler.DateTypeHandler"/>
-        <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"
+        <result property="isDeleted" column="is_deleted" jdbcType="TINYINT" javaType="Boolean"
                 typeHandler="com.laquanquan.personnel_salary.typehandler.TinyIntHandler"/>
     </resultMap>
     <insert id="saveOne" parameterType="com.laquanquan.personnel_salary.domain.Account">

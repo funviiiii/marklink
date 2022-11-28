@@ -26,7 +26,6 @@ public interface UserMapper {
      * @param uid 用于查询的用户编号
      * @return 返回用户对象
      */
-    @Select("SELECT `uid`, `name`, `gender`, `birthday`, `induction`, `department`, `role`, `is_married`, `resume` FROM `t_user` WHERE `uid`=#{uid} LIMIT 1")
     User selectByUid(String uid);
 }
 

@@ -13,14 +13,14 @@
         <result property="induction" column="induction" jdbcType="DATE"/>
         <result property="department" column="department" jdbcType="VARCHAR"/>
         <result property="role" column="role" jdbcType="VARCHAR"/>
-        <result property="isMarried" column="is_married" jdbcType="TINYINT"
+        <result property="isMarried" column="is_married" jdbcType="TINYINT" javaType="Boolean"
                 typeHandler="com.laquanquan.personnel_salary.typehandler.TinyIntHandler"/>
         <result property="resume" column="resume" jdbcType="VARCHAR"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"
                 typeHandler="com.laquanquan.personnel_salary.typehandler.DateTypeHandler"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"
                 typeHandler="com.laquanquan.personnel_salary.typehandler.DateTypeHandler"/>
-        <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"
+        <result property="isDeleted" column="is_deleted" jdbcType="TINYINT" javaType="Boolean"
                 typeHandler="com.laquanquan.personnel_salary.typehandler.TinyIntHandler"/>
     </resultMap>
     <insert id="saveOne" parameterType="com.laquanquan.personnel_salary.domain.User">
@@ -85,4 +85,7 @@
             </if>
         </trim>
     </insert>
+    <select id="selectByUid" resultMap="BaseResultMap">
+        SELECT `uid`, `name`, `gender`, `birthday`, `induction`, `department`, `role`, `is_married`, `resume` FROM `t_user` WHERE `uid`=#{uid} LIMIT 1
+    </select>
 </mapper>

@@ -41,7 +41,7 @@ public class SignUpVO {
     private Date birthday;
 
     @JsonProperty
-    private Integer isMarried;
+    private Boolean isMarried;
 
     public Account getAccount() {
         Account account = new Account();
