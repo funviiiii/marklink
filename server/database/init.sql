@@ -37,7 +37,7 @@ CREATE TABLE `t_user`
     `birthday`    DATE COMMENT '生日',
     `induction`   DATE COMMENT '入职时间',
     `department`  VARCHAR(30) COMMENT '部门（使用部门编号）',
-    `role`        VARCHAR(30) COMMENT '职位（使用职位编号）',
+    `role`        VARCHAR(30) DEFAULT 'rid_member' COMMENT '职位（使用职位编号）',
     `is_married`  TINYINT          NOT NULL COMMENT '是否已婚',
     `resume`      VARCHAR(30) UNIQUE COMMENT '简历',
     `create_time` DATETIME         NOT NULL DEFAULT NOW() COMMENT '创建时间',
@@ -71,12 +71,16 @@ CREATE TABLE `t_department`
 
 CREATE TABLE `t_role`
 (
-    `id`          BIGINT AUTO_INCREMENT COMMENT '主键',
-    `rid`         VARCHAR(30)      NOT NULL UNIQUE COMMENT '职位编号',
-    `role_name`   VARCHAR(25)      NOT NULL COMMENT '职称',
-    `create_time` DATETIME         NOT NULL DEFAULT NOW() COMMENT '创建时间',
-    `update_time` DATETIME         NOT NULL DEFAULT NOW() COMMENT '上次更新时间',
-    `is_deleted`  TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '逻辑删除标识: 已删除(1), 未删除(0)',
+    `id`              BIGINT AUTO_INCREMENT COMMENT '主键',
+    `rid`             VARCHAR(30)      NOT NULL UNIQUE COMMENT '职位编号',
+    `role_name`       VARCHAR(25)      NOT NULL COMMENT '职称',
+    `personnel_right` TINYINT          NOT NULL DEFAULT 0 COMMENT '是否有管理人事的权力',
+    `salary_right`    TINYINT          NOT NULL DEFAULT 0 COMMENT '是否有管理工资的权力',
+    `info_right`      TINYINT          NOT NULL DEFAULT 0 COMMENT '是否有管理基本信息的权力（部门，职位等）',
+    `advance_right`   TINYINT          NOT NULL DEFAULT 0 COMMENT '是否有管理系统的权力',
+    `create_time`     DATETIME         NOT NULL DEFAULT NOW() COMMENT '创建时间',
+    `update_time`     DATETIME         NOT NULL DEFAULT NOW() COMMENT '上次更新时间',
+    `is_deleted`      TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '逻辑删除标识: 已删除(1), 未删除(0)',
     PRIMARY KEY (`id`)
 );
 
@@ -123,3 +127,8 @@ VALUES (1, 'info'),
        (2, 'warning'),
        (3, 'error'),
        (4, 'critical');
+
+# role
+INSERT INTO `t_role`(`rid`, `role_name`, `personnel_right`, `salary_right`, `info_right`, `advance_right`)
+VALUES ('rid_member', 'member', 0, 0, 0, 0),
+       ('rid_manager', 'manager', 1, 1, 1, 1);
