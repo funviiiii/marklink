@@ -53,7 +53,7 @@ public class Manager implements Serializable {
      * 逻辑删除标识: 已删除(1), 未删除(0)
      */
     @JsonIgnore
-    private Integer isDeleted;
+    private Boolean isDeleted;
 
     private static final long serialVersionUID = 1L;
 }

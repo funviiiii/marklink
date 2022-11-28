@@ -1,11 +1,13 @@
 package com.laquanquan.personnel_salary.mapper;
 
 import com.laquanquan.personnel_salary.domain.Role;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 /**
 * @author lqq
 */
+@Mapper
 public interface RoleMapper {
     /**
      * 根据编号查询一个职位

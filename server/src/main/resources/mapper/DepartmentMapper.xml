@@ -5,11 +5,14 @@
 <mapper namespace="com.laquanquan.personnel_salary.mapper.DepartmentMapper">
 
     <resultMap id="BaseResultMap" type="com.laquanquan.personnel_salary.domain.Department">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="did" column="did" jdbcType="VARCHAR"/>
-            <result property="departmentName" column="department_name" jdbcType="VARCHAR"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-            <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="did" column="did" jdbcType="VARCHAR"/>
+        <result property="departmentName" column="department_name" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.DateTypeHandler"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.DateTypeHandler"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.TinyIntHandler"/>
     </resultMap>
 </mapper>

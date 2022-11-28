@@ -117,7 +117,8 @@ public class AccountServiceImpl implements AccountService {
         tmp.setPassword(null);
 
         // 查询是否存在该账户
-        if (accountMapper.selectOne(tmp) == null) {
+        tmp = accountMapper.selectOne(tmp);
+        if (tmp == null) {
             throw new DataNotFoundException("不存在该用户，请检查用户名是否正确!");
         }
 
@@ -131,7 +132,7 @@ public class AccountServiceImpl implements AccountService {
         // 密码正确，构造token并返回
         // token包含的信息内容: 用户id
         Map<String, Object> payload = new HashMap<>(1);
-        payload.put("uid", account.getUid());
+        payload.put("uid", tmp.getUid());
 
         String token = TokenBuilder.build(payload, 24 * 7);
 

@@ -35,25 +35,25 @@ public class Role implements Serializable {
      * 是否有管理人事的权力
      */
     @JsonProperty
-    private Integer personnelRight;
+    private Boolean personnelRight;
 
     /**
      * 是否有管理工资的权力
      */
     @JsonProperty
-    private Integer salaryRight;
+    private Boolean salaryRight;
 
     /**
      * 是否有管理基本信息的权力（部门，职位等）
      */
     @JsonProperty
-    private Integer infoRight;
+    private Boolean infoRight;
 
     /**
      * 是否有管理系统的权力
      */
     @JsonProperty
-    private Integer advanceRight;
+    private Boolean advanceRight;
 
     /**
      * 创建时间
@@ -71,7 +71,7 @@ public class Role implements Serializable {
      * 逻辑删除标识: 已删除(1), 未删除(0)
      */
     @JsonIgnore
-    private Integer isDeleted;
+    private Boolean isDeleted;
 
     private static final long serialVersionUID = 1L;
 }

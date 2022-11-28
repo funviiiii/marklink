@@ -70,7 +70,7 @@ public class Account implements Serializable {
      * 逻辑删除标识
      */
     @JsonIgnore
-    private Integer isDeleted;
+    private Boolean isDeleted;
 
     private static final long serialVersionUID = 1L;
 }
