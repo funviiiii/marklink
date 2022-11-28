@@ -1,7 +1,12 @@
 package com.laquanquan.personnel_salary.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.laquanquan.personnel_salary.domain.Role;
+import com.laquanquan.personnel_salary.service.UserService;
+import com.laquanquan.personnel_salary.utils.WebResponseBody;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 
 /**
  * @author lqq
@@ -9,4 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+
+    @Resource
+    private UserService userService;
+    @RequestMapping(value = "/role", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public WebResponseBody<Role> role(@RequestParam String token) {
+        return userService.getRole(token);
+    }
 }

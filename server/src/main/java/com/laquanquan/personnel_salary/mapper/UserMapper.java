@@ -1,12 +1,14 @@
 package com.laquanquan.personnel_salary.mapper;
 
+import com.laquanquan.personnel_salary.domain.Role;
 import com.laquanquan.personnel_salary.domain.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 /**
-* @author lqq
-*/
+ * @author lqq
+ */
 @Mapper
 public interface UserMapper {
 
@@ -17,6 +19,15 @@ public interface UserMapper {
      * @return 影响的行数
      */
     int saveOne(@Param("user") User user);
+
+    /**
+     * 根据用户编号查询一个用户对象
+     *
+     * @param uid 用于查询的用户编号
+     * @return 返回用户对象
+     */
+    @Select("SELECT `uid`, `name`, `gender`, `birthday`, `induction`, `department`, `role`, `is_married`, `resume` FROM `t_user` WHERE `uid`=#{uid} LIMIT 1")
+    User selectByUid(String uid);
 }
 
 
