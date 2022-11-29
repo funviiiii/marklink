@@ -12,24 +12,31 @@
         <router-link :to="{name: 'salary'}"
                      class="menu-link"
                      :style="{display: authController.salary}"
+                     :right="authController.salary"
         >
           <el-menu-item index="2">工资管理</el-menu-item>
         </router-link>
         <router-link :to="{name: 'info'}"
                      class="menu-link"
                      :style="{display: authController.info}"
+                     :right="authController.info"
         >
           <el-menu-item index="3">基础信息管理</el-menu-item>
         </router-link>
         <router-link :to="{name: 'advance'}"
                      class="menu-link"
                      :style="{display: authController.advance}"
+                     :right="authController.advance"
         >
           <el-menu-item index="4">高级管理</el-menu-item>
         </router-link>
       </el-menu>
     </el-header>
     <el-main>
+      <!-- 获取当前是否有使用权限 -->
+      <router-view
+          :right="authController[router.currentRoute.value.path.replace(/.+index\//, '')] === 'flex'"
+      />
     </el-main>
   </el-container>
 </template>
@@ -58,12 +65,15 @@ const authController = reactive({
   }
 });
 
+const router = useRouter();
+
 // 检测用户是否有权限访问相应的模块
 const checkAuth = () => {
   const token = localStorage.getItem("token");
   if (token == null) {
-    useRouter().push("/account").then()
+    router.push("/account")
     ElMessage.warning("您还未登录，请先登录");
+    return
   }
   axios({
     method: 'GET',

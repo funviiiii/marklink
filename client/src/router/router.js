@@ -4,7 +4,7 @@ import Account from '/src/views/Account.vue'
 import AccountForm from '/src/components/AccountForm.vue'
 import EmailForm from '/src/components/EmailForm.vue'
 import Personnel from '/src/components/Personnel.vue'
-import Salary from '/src/components/salary.vue'
+import Salary from '/src/components/Salary.vue'
 import Info from '/src/components/info.vue'
 import Advance from '/src/components/advance.vue'
 
