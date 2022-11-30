@@ -6,6 +6,8 @@ DROP TABLE IF EXISTS `t_resume`;
 
 DROP TABLE IF EXISTS `t_department`;
 
+DROP TABLE IF EXISTS `t_salary`;
+
 DROP TABLE IF EXISTS `t_role`;
 
 DROP TABLE IF EXISTS `t_manager`;
@@ -37,7 +39,7 @@ CREATE TABLE `t_user`
     `birthday`    DATE COMMENT '生日',
     `induction`   DATE COMMENT '入职时间',
     `department`  VARCHAR(30) COMMENT '部门（使用部门编号）',
-    `role`        VARCHAR(30) DEFAULT 'rid_member' COMMENT '职位（使用职位编号）',
+    `role`        VARCHAR(30)               DEFAULT 'rid_member' COMMENT '职位（使用职位编号）',
     `is_married`  TINYINT          NOT NULL COMMENT '是否已婚',
     `resume`      VARCHAR(30) UNIQUE COMMENT '简历',
     `create_time` DATETIME         NOT NULL DEFAULT NOW() COMMENT '创建时间',
@@ -55,6 +57,24 @@ CREATE TABLE `t_resume`
     `create_time` DATETIME         NOT NULL DEFAULT NOW() COMMENT '创建时间',
     `update_time` DATETIME         NOT NULL DEFAULT NOW() COMMENT '上次更新时间',
     `is_deleted`  TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '逻辑删除标识：已删除(1), 未删除(0)',
+    PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `t_salary`
+(
+    `id`           BIGINT AUTO_INCREMENT COMMENT '主键',
+    `sid`          VARCHAR(30)      NOT NULL COMMENT '工资编号',
+    `uid`          VARCHAR(30)      NOT NULL COMMENT '用户编号',
+    `basic_salary` DECIMAL(15, 2)   NOT NULL DEFAULT 0.00 COMMENT '基本工资',
+    `allowance`    DECIMAL(15, 2)   NOT NULL DEFAULT 0.00 COMMENT '岗位津贴',
+    `reward`       DECIMAL(15, 2)   NOT NULL DEFAULT 0.00 COMMENT '奖励',
+    `should_pay`   DECIMAL(15, 2)   NOT NULL DEFAULT 0.00 COMMENT '应付工资',
+    `cost`         DECIMAL(15, 2)   NOT NULL DEFAULT 0.00 COMMENT '其他花销',
+    `insurance`    DECIMAL(15, 2)   NOT NULL DEFAULT 0.00 COMMENT '保险',
+    `real_salary`  DECIMAL(15, 2)   NOT NULL DEFAULT 0.00 COMMENT '实发工资',
+    `create_time`  DATETIME         NOT NULL DEFAULT NOW() COMMENT '创建时间',
+    `update_time`  DATETIME         NOT NULL DEFAULT NOW() COMMENT '上次更新时间',
+    `is_deleted`   TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '逻辑删除标识: 已删除(1), 未删除(0)',
     PRIMARY KEY (`id`)
 );
 

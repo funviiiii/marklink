@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.laquanquan.personnel_salary.mapper.SalaryMapper">
+
+    <resultMap id="BaseResultMap" type="com.laquanquan.personnel_salary.domain.Salary">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="sid" column="sid" jdbcType="VARCHAR"/>
+        <result property="uid" column="uid" jdbcType="VARCHAR"/>
+        <result property="basicSalary" column="basic_salary" jdbcType="DECIMAL"/>
+        <result property="allowance" column="allowance" jdbcType="DECIMAL"/>
+        <result property="reward" column="reward" jdbcType="DECIMAL"/>
+        <result property="shouldPay" column="should_pay" jdbcType="DECIMAL"/>
+        <result property="cost" column="cost" jdbcType="DECIMAL"/>
+        <result property="insurance" column="insurance" jdbcType="DECIMAL"/>
+        <result property="realSalary" column="real_salary" jdbcType="DECIMAL"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.DateTypeHandler"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.DateTypeHandler"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="TINYINT" javaType="Boolean"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.TinyIntHandler"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,sid,uid,
+        basic_salary,allowance,reward,
+        should_pay,cost,insurance,
+        real_salary,create_time,update_time,
+        is_deleted
+    </sql>
+</mapper>
