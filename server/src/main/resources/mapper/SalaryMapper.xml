@@ -22,12 +22,4 @@
         <result property="isDeleted" column="is_deleted" jdbcType="TINYINT" javaType="Boolean"
                 typeHandler="com.laquanquan.personnel_salary.typehandler.TinyIntHandler"/>
     </resultMap>
-
-    <sql id="Base_Column_List">
-        id,sid,uid,
-        basic_salary,allowance,reward,
-        should_pay,cost,insurance,
-        real_salary,create_time,update_time,
-        is_deleted
-    </sql>
 </mapper>
