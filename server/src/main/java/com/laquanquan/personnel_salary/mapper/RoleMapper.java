@@ -4,6 +4,8 @@ import com.laquanquan.personnel_salary.domain.Role;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 /**
 * @author lqq
 */
@@ -16,6 +18,8 @@ public interface RoleMapper {
      * @return 返回的职位对象
      */
     Role selectByRid(String rid);
+
+    List<Role> selectAll();
 }
 
 

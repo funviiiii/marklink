@@ -3,9 +3,11 @@ package com.laquanquan.personnel_salary.mapper;
 import com.laquanquan.personnel_salary.domain.Department;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
-* @author lqq
-*/
+ * @author lqq
+ */
 @Mapper
 public interface DepartmentMapper {
     /**
@@ -15,6 +17,13 @@ public interface DepartmentMapper {
      * @return 查询到的部门对象
      */
     Department selectByDid(String did);
+
+    /**
+     * 查询所有部门
+     *
+     * @return 部门列表
+     */
+    List<Department> selectAll();
 }
 
 

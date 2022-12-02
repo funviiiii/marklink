@@ -46,8 +46,15 @@ public class UserServiceImpl implements UserService {
 
         // 将用户对象中的部门编号替换为具体的部门名字
         Department department = departmentMapper.selectByDid(user.getDepartment());
-        System.out.println(department);
         user.setDepartment(department.getDepartmentName());
+
+        // 将用户对象中的性别信息替换成可读的值
+        user.setGender(switch (user.getGender()) {
+            case "m" -> "男";
+            case "f" -> "女";
+            case "s" -> "保密";
+            default -> null;
+        });
         return new WebResponseBody<>("获取用户对象成功", user);
     }
 }

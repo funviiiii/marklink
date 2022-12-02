@@ -182,7 +182,7 @@ const getInfo = () => {
       ElMessage.error(res.data["msg"]);
     }
   }).catch(res => {
-    ElMessage.error(res.data["msg"]);
+    ElMessage.error(res.response.data["msg"]);
   })
   // 获取用户对象
   axios({
@@ -204,7 +204,43 @@ const getInfo = () => {
       ElMessage.error(res.data["msg"]);
     }
   }).catch(res => {
-    ElMessage.error(res.data["msg"]);
+    ElMessage.error(res.response.data["msg"]);
+  })
+  // 获取部门信息
+  axios({
+    url: "/department",
+    method: "GET"
+  }).then(res => {
+    if (res.status === 200) {
+      const data = res.data["content"];
+      // 清空数据
+      department.value = [];
+      for (const item of data) {
+        department.value.push(item["departmentName"])
+      }
+    } else {
+      ElMessage.error(res.data["msg"])
+    }
+  }).catch(res => {
+    ElMessage.error(res.response.data["msg"])
+  })
+  // 获取职位信息
+  axios({
+    url: "/role",
+    method: "GET"
+  }).then(res => {
+    if (res.status === 200) {
+      const data = res.data["content"];
+      // 清空数据
+      role.value = [];
+      for (const item of data) {
+        role.value.push(item["roleName"])
+      }
+    } else {
+      ElMessage.error(res.data["msg"])
+    }
+  }).catch(res => {
+    ElMessage.error(res.response.data["msg"])
   })
 }
 
@@ -223,6 +259,7 @@ const writingInfo = () => {
 
 const updateInfo = () => {
   // TODO 提交信息更改
+
 }
 
 const changePassword = () => {
