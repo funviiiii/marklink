@@ -9,10 +9,7 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * @author Zyxxxxxi
- * @version 1.0.0
- * @createDate 2022/10/31
- * @since 1.0.0
+ * @author lqq
  */
 public class TokenBuilder {
     private static final Key PRIVATE_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);

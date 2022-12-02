@@ -3,6 +3,7 @@ package com.laquanquan.personnel_salary.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.laquanquan.personnel_salary.constant.RedisKey;
 import com.laquanquan.personnel_salary.domain.Account;
+import com.laquanquan.personnel_salary.exception.DataNotFoundException;
 import com.laquanquan.personnel_salary.service.AccountService;
 import com.laquanquan.personnel_salary.utils.TokenBuilder;
 import com.laquanquan.personnel_salary.utils.WebResponseBody;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.nio.file.AccessDeniedException;
 import java.sql.SQLDataException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -55,22 +58,42 @@ public class AccountController {
      */
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = "/get", method = RequestMethod.POST)
-    public String getAccount(@RequestBody Account account) {
+    public WebResponseBody<Account> getAccount(@RequestBody Account account) {
         return accountService.getAccount(account);
     }
 
     /**
-     * 根据token查询一个用户
+     * 自动登录
      *
      * @param token 前端传来的token
-     * @return 查询到的用户的用户编号
+     * @return 新创建的token
      */
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping
-    public String getAccount(@RequestParam String token) {
+    @GetMapping("/autologin")
+    public WebResponseBody<String> autoLogin(@RequestParam String token) {
         Account account = new Account();
         account.setUid((String) TokenBuilder.parse(token).get("uid"));
-        return getAccount(account);
+        account = getAccount(account).getContent();
+        if (account == null) {
+            // 没查询到相关用户
+            throw new DataNotFoundException("用户自动登录失败");
+        }
+        Map<String, Object> payload = new HashMap<>(1);
+        payload.put("uid", account.getUid());
+        return new WebResponseBody<>("登录成功", TokenBuilder.build(payload, 7 * 24));
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping
+    public WebResponseBody<Account> getAccount(@RequestParam String token) {
+        Account account = new Account();
+        account.setUid((String) TokenBuilder.parse(token).get("uid"));
+        account = getAccount(account).getContent();
+        if (account == null) {
+            // 没查询到相关用户
+            throw new DataNotFoundException("获取用户信息失败");
+        }
+        return new WebResponseBody<>("获取账户信息成功", account);
     }
 
 

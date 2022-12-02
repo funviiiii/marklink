@@ -15,4 +15,8 @@
         <result property="isDeleted" column="is_deleted" jdbcType="TINYINT" javaType="Boolean"
                 typeHandler="com.laquanquan.personnel_salary.typehandler.TinyIntHandler"/>
     </resultMap>
+    <select id="selectByDid" resultMap="BaseResultMap">
+        SELECT `did`, `department_name` FROM `t_department` WHERE `did`=#{did} LIMIT 1
+    </select>
+
 </mapper>

@@ -1,6 +1,7 @@
 package com.laquanquan.personnel_salary.controller;
 
 import com.laquanquan.personnel_salary.domain.Role;
+import com.laquanquan.personnel_salary.domain.User;
 import com.laquanquan.personnel_salary.service.UserService;
 import com.laquanquan.personnel_salary.utils.WebResponseBody;
 import org.springframework.http.HttpStatus;
@@ -17,9 +18,16 @@ public class UserController {
 
     @Resource
     private UserService userService;
+
     @RequestMapping(value = "/role", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public WebResponseBody<Role> role(@RequestParam String token) {
         return userService.getRole(token);
+    }
+
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public WebResponseBody<User> get(@RequestParam String token) {
+        return userService.get(token);
     }
 }

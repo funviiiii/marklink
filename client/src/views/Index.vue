@@ -4,31 +4,36 @@
       <el-menu mode="horizontal"
                :style="{display: authController.menu()}"
       >
+        <router-link :to="{name: 'personal'}" class="menu-link"
+                     :style="{display: authController.personnel}"
+        >
+          <el-menu-item index="1">基本信息</el-menu-item>
+        </router-link>
         <router-link :to="{name: 'personnel'}" class="menu-link"
                      :style="{display: authController.personnel}"
         >
-          <el-menu-item index="1">人事管理</el-menu-item>
+          <el-menu-item index="2">人事管理</el-menu-item>
         </router-link>
         <router-link :to="{name: 'salary'}"
                      class="menu-link"
                      :style="{display: authController.salary}"
                      :right="authController.salary"
         >
-          <el-menu-item index="2">工资管理</el-menu-item>
+          <el-menu-item index="3">工资管理</el-menu-item>
         </router-link>
         <router-link :to="{name: 'info'}"
                      class="menu-link"
                      :style="{display: authController.info}"
                      :right="authController.info"
         >
-          <el-menu-item index="3">基础信息管理</el-menu-item>
+          <el-menu-item index="4">基础信息管理</el-menu-item>
         </router-link>
         <router-link :to="{name: 'advance'}"
                      class="menu-link"
                      :style="{display: authController.advance}"
                      :right="authController.advance"
         >
-          <el-menu-item index="4">高级管理</el-menu-item>
+          <el-menu-item index="5">高级管理</el-menu-item>
         </router-link>
       </el-menu>
     </el-header>
@@ -46,6 +51,7 @@ import axios from "../utils/axios.js";
 import {onMounted, reactive} from "vue";
 import {useRouter} from "vue-router";
 import {ElMessage} from "element-plus";
+import PersonalInfo from "../components/PersonalInfo.vue";
 
 const authController = reactive({
   personnel: 'none',

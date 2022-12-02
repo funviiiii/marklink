@@ -19,7 +19,7 @@ public interface AccountService {
      * @param account 封装好的账户对象
      * @return 获取到的用户编号，若没查询到则返回空
      */
-    String getAccount(Account account);
+    WebResponseBody<Account> getAccount(Account account);
 
 
     /**

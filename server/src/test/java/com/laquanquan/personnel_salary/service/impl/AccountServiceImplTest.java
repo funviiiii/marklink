@@ -68,7 +68,7 @@ class AccountServiceImplTest {
         tmpUser.setName(RandomStringBuilder.build(5));
         tmpUser.setGender("男");
         tmpUser.setBirthday(new Date());
-        tmpUser.setIsMarried(0);
+        tmpUser.setIsMarried(false);
 
         // 用户名过长
         Assertions.assertThrows(UserInfoInvalidException.class,

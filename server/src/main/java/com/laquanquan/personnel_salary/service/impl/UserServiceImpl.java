@@ -1,7 +1,9 @@
 package com.laquanquan.personnel_salary.service.impl;
 
+import com.laquanquan.personnel_salary.domain.Department;
 import com.laquanquan.personnel_salary.domain.Role;
 import com.laquanquan.personnel_salary.domain.User;
+import com.laquanquan.personnel_salary.mapper.DepartmentMapper;
 import com.laquanquan.personnel_salary.mapper.RoleMapper;
 import com.laquanquan.personnel_salary.mapper.UserMapper;
 import com.laquanquan.personnel_salary.service.UserService;
@@ -22,11 +24,30 @@ public class UserServiceImpl implements UserService {
     @Resource
     private RoleMapper roleMapper;
 
+    @Resource
+    private DepartmentMapper departmentMapper;
+
     @Override
     public WebResponseBody<Role> getRole(String token) {
         String uid = (String) TokenBuilder.parse(token).get("uid");
         User user = userMapper.selectByUid(uid);
         Role role = roleMapper.selectByRid(user.getRole());
-        return new WebResponseBody<>("获取用户对象成功", role);
+        return new WebResponseBody<>("获取职位对象成功", role);
+    }
+
+    @Override
+    public WebResponseBody<User> get(String token) {
+        String uid = (String) TokenBuilder.parse(token).get("uid");
+        User user = userMapper.selectByUid(uid);
+
+        // 将用户对象中的职位编号替换为具体的职位名字
+        Role role = roleMapper.selectByRid(user.getRole());
+        user.setRole(role.getRoleName());
+
+        // 将用户对象中的部门编号替换为具体的部门名字
+        Department department = departmentMapper.selectByDid(user.getDepartment());
+        System.out.println(department);
+        user.setDepartment(department.getDepartmentName());
+        return new WebResponseBody<>("获取用户对象成功", user);
     }
 }

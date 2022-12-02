@@ -30,11 +30,12 @@ onMounted(() => {
   const token = localStorage.getItem("token")
   if (token !== null) {
     axios({
-      url: `/account?token=${token}`,
+      url: `/account/autologin?token=${token}`,
       method: "GET",
     }).then(res => {
       if (res.data != null) {
         ElMessage.success("登录成功");
+        localStorage.setItem("token", res.data);
         router.push("/index")
       } else {
         localStorage.removeItem("token");

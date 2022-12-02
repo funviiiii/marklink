@@ -1,4 +1,4 @@
-package com.laquanquan.personnel_salary;
+package com.laquanquan.personnel_salary.utils;
 
 import com.laquanquan.personnel_salary.utils.RandomStringBuilder;
 import com.laquanquan.personnel_salary.utils.TokenBuilder;

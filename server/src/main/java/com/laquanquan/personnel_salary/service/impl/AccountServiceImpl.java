@@ -3,6 +3,7 @@ package com.laquanquan.personnel_salary.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.laquanquan.personnel_salary.constant.RegPattern;
+import com.laquanquan.personnel_salary.controller.AccountController;
 import com.laquanquan.personnel_salary.domain.Account;
 import com.laquanquan.personnel_salary.domain.User;
 import com.laquanquan.personnel_salary.exception.AccountDuplicateException;
@@ -42,13 +43,14 @@ public class AccountServiceImpl implements AccountService {
     private ObjectMapper objectMapper;
 
     @Override
-    public String getAccount(Account account) {
+    public WebResponseBody<Account> getAccount(Account account) {
         Account tmp = accountMapper.selectOne(account);
         if (tmp == null) {
             log.warn("找不到相应的账户");
             throw new DataNotFoundException("找不到相应的账户");
         }
-        return tmp.getUid();
+        tmp.setPassword("****************");
+        return new WebResponseBody<>("获取用户账户成功", tmp);
     }
 
 
