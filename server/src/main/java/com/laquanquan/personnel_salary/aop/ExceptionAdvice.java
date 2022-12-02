@@ -5,6 +5,7 @@ import com.laquanquan.personnel_salary.exception.DataNotFoundException;
 import com.laquanquan.personnel_salary.exception.UserInfoInvalidException;
 import com.laquanquan.personnel_salary.utils.EmailSender;
 import com.laquanquan.personnel_salary.utils.WebResponseBody;
+import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -44,11 +45,18 @@ public class ExceptionAdvice {
             AccessDeniedException.class,
             AccountDuplicateException.class,
             IllegalArgumentException.class,
-            UserInfoInvalidException.class
+            UserInfoInvalidException.class,
     })
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public WebResponseBody<String> ownException(Exception e) {
         log.warn(e.getMessage(), e);
         return new WebResponseBody<>(e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    @ExceptionHandler(JwtException.class)
+    public WebResponseBody<String> authNotAllowException(JwtException e) {
+        log.warn(e.getMessage(), e);
+        return new WebResponseBody<>("登录信息有误，请重新登录");
     }
 }

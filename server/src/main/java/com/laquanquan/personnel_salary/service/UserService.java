@@ -4,6 +4,8 @@ import com.laquanquan.personnel_salary.domain.Role;
 import com.laquanquan.personnel_salary.domain.User;
 import com.laquanquan.personnel_salary.utils.WebResponseBody;
 
+import java.sql.SQLDataException;
+
 /**
  * @author lqq
  */
@@ -25,4 +27,12 @@ public interface UserService {
      * @return 数据响应体
      */
     WebResponseBody<User> get(String token);
+
+    /**
+     * 更新一条数据
+     *
+     * @param user 用于更改的用户信息
+     * @return 返回响应体，载荷为空
+     */
+    WebResponseBody<Object> updateUser(User user) throws SQLDataException;
 }

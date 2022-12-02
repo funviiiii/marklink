@@ -15,7 +15,7 @@
           <el-form-item
               label="用户名："
           >
-            <el-input :disabled="!isWriting" v-model="info.username"></el-input>
+            <el-input disabled v-model="info.username"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button @click="dialogVisible = true">修改密码</el-button>
@@ -56,20 +56,13 @@
             <el-form-item
                 label="入职日期："
             >
-              <el-date-picker
-                  :disabled="!isWriting"
-                  v-model="info.induction"
-                  value-format="YYYY-MM-DD"
-              >
+              <el-date-picker disabled v-model="info.induction" value-format="YYYY-MM-DD">
               </el-date-picker>
             </el-form-item>
             <el-form-item
                 label="部门："
             >
-              <el-select
-                  :disabled="!isWriting"
-                  v-model="info.department"
-              >
+              <el-select disabled v-model="info.department">
                 <el-option v-for="(item, index) in department" :index="index" :value="item">
                   {{ item }}
                 </el-option>
@@ -78,10 +71,7 @@
             <el-form-item
                 label="职位："
             >
-              <el-select
-                  :disabled="!isWriting"
-                  v-model="info.role"
-              >
+              <el-select disabled v-model="info.role">
                 <el-option v-for="(item, index) in role" :index="index" :value="item">
                   {{ item }}
                 </el-option>
@@ -258,8 +248,27 @@ const writingInfo = () => {
 }
 
 const updateInfo = () => {
-  // TODO 提交信息更改
-
+  let tmp = JSON.parse(JSON.stringify(info));
+  delete tmp["username"]
+  delete tmp["induction"]
+  delete tmp["department"]
+  delete tmp["role"]
+  axios({
+    url: "/user",
+    method: "PUT",
+    data: tmp
+  }).then(res => {
+    if (res.status === 201) {
+      ElMessage.success("修改信息成功");
+    } else {
+      ElMessage.warning(res.data["msg"]);
+    }
+  }).catch(res => {
+    ElMessage.warning(res.response.data["msg"]);
+  })
+  getInfo();
+  updateBtnInfo.value = "修改信息";
+  isWriting.value = false;
 }
 
 const changePassword = () => {

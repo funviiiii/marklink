@@ -27,6 +27,8 @@ public interface UserMapper {
      * @return 返回用户对象
      */
     User selectByUid(String uid);
+
+    int updateOne(@Param("user") User user);
 }
 
 

@@ -85,6 +85,26 @@
             </if>
         </trim>
     </insert>
+    <update id="updateOne" parameterType="com.laquanquan.personnel_salary.domain.User">
+        UPDATE `t_user`
+        SET
+        <trim>
+            <if test="user.name != null and user.name != ''">
+                `name`=#{user.name},
+            </if>
+            <if test="user.gender != null and user.gender != ''">
+                `gender`=#{user.gender},
+            </if>
+            <if test="user.birthday != null">
+                `birthday`=#{user.birthday},
+            </if>
+            <if test="user.isMarried != null">
+                `is_married`=#{user.isMarried},
+            </if>
+        </trim>
+        `update_time`=NOW()
+        WHERE `uid`=#{user.uid} AND `is_deleted`=0
+    </update>
     <select id="selectByUid" resultMap="BaseResultMap">
         SELECT `uid`, `name`, `gender`, `birthday`, `induction`, `department`, `role`, `is_married`, `resume` FROM `t_user` WHERE `uid`=#{uid} LIMIT 1
     </select>

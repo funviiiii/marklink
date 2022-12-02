@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.sql.SQLDataException;
 
 /**
  * @author lqq
@@ -29,5 +30,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public WebResponseBody<User> get(@RequestParam String token) {
         return userService.get(token);
+    }
+
+    @PutMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public WebResponseBody<Object> update(@RequestBody User user) throws SQLDataException {
+        return userService.updateUser(user);
     }
 }

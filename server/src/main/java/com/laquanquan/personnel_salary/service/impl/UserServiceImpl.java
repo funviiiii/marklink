@@ -12,6 +12,7 @@ import com.laquanquan.personnel_salary.utils.WebResponseBody;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.sql.SQLDataException;
 
 /**
  * @author lqq
@@ -56,5 +57,19 @@ public class UserServiceImpl implements UserService {
             default -> null;
         });
         return new WebResponseBody<>("获取用户对象成功", user);
+    }
+
+    @Override
+    public WebResponseBody<Object> updateUser(User user) throws SQLDataException {
+        user.setGender(switch (user.getGender()) {
+            case "男" -> "m";
+            case "女" -> "f";
+            case "保密" -> "s";
+            default -> null;
+        });
+        if(userMapper.updateOne(user) != 1) {
+            throw new SQLDataException("更新数据失败");
+        }
+        return new WebResponseBody<>("更新数据成功");
     }
 }
