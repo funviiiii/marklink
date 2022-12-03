@@ -57,6 +57,22 @@
         </trim>
         ;
     </insert>
+    <update id="updateOne">
+        UPDATE `t_account`
+        SET
+        <trim suffixOverrides=",">
+            <if test="account.password != null and account.password != ''">
+                `password`=#{account.password},
+            </if>
+            <if test="account.email != null and account.email != ''">
+                `email`=#{account.email},
+            </if>
+            <if test="account.phone != null and account.phone != ''">
+                `phone`=#{account.phone},
+            </if>
+        </trim>
+        WHERE `uid`=#{account.uid} AND `is_deleted`=0
+    </update>
     <select id="selectOne" resultMap="BaseResultMap"
             parameterType="com.laquanquan.personnel_salary.domain.Account">
         SELECT `uid`,`username`,`email`,`phone` FROM `t_account`

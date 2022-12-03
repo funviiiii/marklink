@@ -7,6 +7,7 @@ import com.laquanquan.personnel_salary.exception.DataNotFoundException;
 import com.laquanquan.personnel_salary.service.AccountService;
 import com.laquanquan.personnel_salary.utils.TokenBuilder;
 import com.laquanquan.personnel_salary.utils.WebResponseBody;
+import com.laquanquan.personnel_salary.vo.PasswordUpdateVO;
 import com.laquanquan.personnel_salary.vo.SignUpVO;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
@@ -126,5 +127,11 @@ public class AccountController {
     @ResponseStatus(HttpStatus.OK)
     public WebResponseBody<String> login(@RequestBody Account account) throws AccessDeniedException, JsonProcessingException {
         return accountService.login(account);
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PutMapping
+    public WebResponseBody<Object> updatePassword(@RequestBody PasswordUpdateVO passwordUpdateVO) throws AccessDeniedException {
+        return accountService.updatePassword(passwordUpdateVO);
     }
 }

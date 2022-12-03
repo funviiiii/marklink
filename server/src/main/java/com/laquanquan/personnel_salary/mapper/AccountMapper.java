@@ -36,6 +36,8 @@ public interface AccountMapper {
      */
     @Delete("DELETE FROM `t_account` WHERE `uid`=#{uid} LIMIT 1")
     int hardDeleteByUid(String uid);
+
+    int updateOne(@Param("account") Account account);
 }
 
 

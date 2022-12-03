@@ -3,7 +3,6 @@ package com.laquanquan.personnel_salary.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.laquanquan.personnel_salary.constant.RegPattern;
-import com.laquanquan.personnel_salary.controller.AccountController;
 import com.laquanquan.personnel_salary.domain.Account;
 import com.laquanquan.personnel_salary.domain.User;
 import com.laquanquan.personnel_salary.exception.AccountDuplicateException;
@@ -16,9 +15,9 @@ import com.laquanquan.personnel_salary.utils.Md5Utils;
 import com.laquanquan.personnel_salary.utils.RandomStringBuilder;
 import com.laquanquan.personnel_salary.utils.TokenBuilder;
 import com.laquanquan.personnel_salary.utils.WebResponseBody;
+import com.laquanquan.personnel_salary.vo.PasswordUpdateVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.nio.file.AccessDeniedException;
@@ -139,6 +138,23 @@ public class AccountServiceImpl implements AccountService {
         String token = TokenBuilder.build(payload, 24 * 7);
 
         return new WebResponseBody<>("登录成功", token);
+    }
+
+    @Override
+    public WebResponseBody<Object> updatePassword(PasswordUpdateVO passwordUpdateVO) throws AccessDeniedException {
+        // 校验原密码是否通过
+        Account account = new Account();
+        account.setUid(passwordUpdateVO.getUid());
+        account.setPassword(Md5Utils.encode(passwordUpdateVO.getOldPassword()));
+        if (accountMapper.selectOne(account) != null) {
+            // 校验不通过
+            throw new AccessDeniedException("原密码不正确，请重试");
+        }
+
+        // 修改密码
+        account.setPassword(Md5Utils.encode(passwordUpdateVO.getNewPassword()));
+        accountMapper.updateOne(account);
+        return new WebResponseBody<>("修改密码成功");
     }
 
     /**
