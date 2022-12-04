@@ -29,10 +29,8 @@
               label-width="100"
               class="el-col-16"
           >
-            <el-form-item
-                label="姓名："
-            >
-              <el-input :disabled="!isWriting" v-model="info.name"></el-input>
+            <el-form-item label="姓名：">
+              <el-input :disabled="!isWriting" v-model="info.name" maxlength="16"></el-input>
             </el-form-item>
             <el-form-item
                 label="性别："
@@ -94,15 +92,15 @@
       <el-dialog v-model="dialogVisible" title="修改密码">
         <el-form :model="passwordForm">
           <el-form-item label="旧密码" label-width="100px">
-            <el-input v-model="passwordForm.oldPassword"/>
+            <el-input v-model="passwordForm.oldPassword" type="password" show-password clearable maxlength="16"/>
           </el-form-item>
           <el-form-item label="新密码" label-width="100px">
-            <el-input></el-input>
+            <el-input v-model="passwordForm.newPassword" type="password" show-password clearable maxlength="16"/>
           </el-form-item>
         </el-form>
         <template #footer>
       <span class="dialog-footer">
-        <el-button @click="cancelChangePassword">取消修改</el-button>
+        <el-button @click="dialogVisible = false">取消修改</el-button>
         <el-button type="primary" @click="changePassword">
           确认修改
         </el-button>
@@ -115,7 +113,7 @@
 
 <script setup>
 
-import {onMounted, reactive, ref} from "vue";
+import {onMounted, reactive, ref, watch} from "vue";
 import axios from "../utils/axios.js";
 import dayjs from "dayjs";
 import {ElMessage} from "element-plus";
@@ -129,12 +127,6 @@ const role = ref([]);
 let updateBtnInfo = ref("修改信息");
 
 let dialogVisible = ref(false);
-
-const cancelChangePassword = () => {
-  dialogVisible.value = false;
-  passwordForm.oldPassword = "";
-  passwordForm.newPassword = "";
-}
 
 const passwordForm = reactive({
   oldPassword: "",
@@ -153,9 +145,11 @@ const info = reactive({
   isMarried: false,
   resume: ""
 })
+
 onMounted(() => {
   getInfo();
 })
+
 const getInfo = () => {
   let token = localStorage.getItem("token");
   // 获取账户对象
@@ -247,7 +241,23 @@ const writingInfo = () => {
   }
 }
 
+watch(dialogVisible, () => {
+  passwordForm.newPassword = "";
+  passwordForm.oldPassword = "";
+});
+
+function checkName() {
+  if (!/[\u4e00-\u9fa5\w.·丶]+/.test(info.name)) {
+    ElMessage.warning("你的真实姓名输入不合法")
+    return false;
+  }
+  return true;
+}
+
 const updateInfo = () => {
+  if (!checkName()) {
+    return
+  }
   let tmp = JSON.parse(JSON.stringify(info));
   delete tmp["username"]
   delete tmp["induction"]
@@ -271,9 +281,42 @@ const updateInfo = () => {
   isWriting.value = false;
 }
 
+function checkPassword() {
+  const reg = /[\w.]{6,16}/;
+  if (!reg.test(passwordForm.oldPassword) && !reg.test(passwordForm.newPassword)) {
+    ElMessage.warning("密码格式不合法，请输入6到16位字母或数字（可以存在英文字符的\".\"）");
+    return false;
+  }
+  if (passwordForm.oldPassword === passwordForm.newPassword) {
+    ElMessage.warning("两次密码输入相同，请确认您的输入是否有误");
+    return false;
+  }
+  return true;
+}
+
 const changePassword = () => {
-  dialogVisible.value = false;
-  // TODO 修改密码
+  if (!checkPassword()) {
+    return
+  }
+  let tmp = {};
+  tmp["uid"] = info.uid;
+  tmp["oldPassword"] = passwordForm.oldPassword;
+  tmp["newPassword"] = passwordForm.newPassword;
+  axios({
+    url: "/account",
+    method: "PUT",
+    data: tmp
+  }).then(res => {
+    if (res.status === 201) {
+      // 修改成功
+      ElMessage.success(res.data["msg"]);
+      dialogVisible.value = false;
+    } else {
+      ElMessage.warning(res.data["msg"]);
+    }
+  }).catch(res => {
+    ElMessage.warning(res.response.data["msg"])
+  })
 }
 </script>
 

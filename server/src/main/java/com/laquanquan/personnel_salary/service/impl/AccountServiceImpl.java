@@ -146,7 +146,7 @@ public class AccountServiceImpl implements AccountService {
         Account account = new Account();
         account.setUid(passwordUpdateVO.getUid());
         account.setPassword(Md5Utils.encode(passwordUpdateVO.getOldPassword()));
-        if (accountMapper.selectOne(account) != null) {
+        if (accountMapper.selectOne(account)== null) {
             // 校验不通过
             throw new AccessDeniedException("原密码不正确，请重试");
         }

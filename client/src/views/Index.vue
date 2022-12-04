@@ -97,15 +97,17 @@ const checkAuth = () => {
       authController.info = 'none';
       authController.advance = 'none';
       localStorage.removeItem("token")
-      ElMessage.error("登录信息有误，请重新登录后重试")
+      router.push("/account");
+      ElMessage.error("登录信息有误，请重新登录后重试");
     }
   }).catch(() => {
     authController.personnel = 'none';
     authController.salary = 'none';
     authController.info = 'none';
     authController.advance = 'none';
-    localStorage.removeItem("token")
-    ElMessage.error("登录信息有误，请重新登录后重试")
+    localStorage.removeItem("token");
+    router.push("/account");
+    ElMessage.error("登录信息有误，请重新登录后重试");
   })
 }
 
