@@ -3,8 +3,11 @@ package com.laquanquan.personnel_salary.service;
 import com.laquanquan.personnel_salary.domain.Role;
 import com.laquanquan.personnel_salary.domain.User;
 import com.laquanquan.personnel_salary.utils.WebResponseBody;
+import com.laquanquan.personnel_salary.vo.UserDataVO;
 
+import java.nio.file.AccessDeniedException;
 import java.sql.SQLDataException;
+import java.util.List;
 
 /**
  * @author lqq
@@ -35,4 +38,12 @@ public interface UserService {
      * @return 返回响应体，载荷为空
      */
     WebResponseBody<Object> updateUser(User user) throws SQLDataException;
+
+    /**
+     * 根据当前管理员所属的部门获取部门支援
+     *
+     * @param token 存放了用户信息的token
+     * @return 一个部门下的所有职员
+     */
+    WebResponseBody<List<UserDataVO>> getUserByDepartment(String token) throws AccessDeniedException;
 }

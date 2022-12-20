@@ -63,7 +63,6 @@ CREATE TABLE `t_resume`
 CREATE TABLE `t_salary`
 (
     `id`           BIGINT AUTO_INCREMENT COMMENT '主键',
-    `sid`          VARCHAR(30)      NOT NULL COMMENT '工资编号',
     `uid`          VARCHAR(30)      NOT NULL COMMENT '用户编号',
     `basic_salary` DECIMAL(15, 2)   NOT NULL DEFAULT 0.00 COMMENT '基本工资',
     `allowance`    DECIMAL(15, 2)   NOT NULL DEFAULT 0.00 COMMENT '岗位津贴',
