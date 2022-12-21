@@ -51,7 +51,6 @@ import axios from "../utils/axios.js";
 import {onMounted, reactive} from "vue";
 import {useRouter} from "vue-router";
 import {ElMessage} from "element-plus";
-import PersonalInfo from "../components/PersonalInfo.vue";
 
 const authController = reactive({
   personnel: 'none',

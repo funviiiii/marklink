@@ -88,10 +88,12 @@ import {useRouter} from "vue-router";
 import {ElMessage} from "element-plus";
 import {onMounted, reactive, ref, watch} from "vue";
 import axios from "../utils/axios.js";
-import dayjs, {Dayjs} from "dayjs";
+import dayjs from "dayjs";
 
 let departmentSelections = ref([]);
 let roleSelections = ref([]);
+
+let content = ref("abc")
 
 function loadInfo() {
   // 获取职员信息

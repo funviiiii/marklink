@@ -8,6 +8,7 @@ import Salary from '/src/components/Salary.vue'
 import Info from '/src/components/info.vue'
 import Advance from '/src/components/advance.vue'
 import PersonalInfo from "../components/PersonalInfo.vue";
+import Resume from "../views/Resume.vue";
 
 const routes = [
     {path: '/', redirect: '/index'},
@@ -26,6 +27,7 @@ const routes = [
             {path: 'email', component: EmailForm}
         ]
     },
+    {path: '/resume', name: 'resume', component: Resume}
 ]
 
 export const router = createRouter({
