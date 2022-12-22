@@ -27,7 +27,7 @@ const routes = [
             {path: 'email', component: EmailForm}
         ]
     },
-    {path: '/resume', name: 'resume', component: Resume}
+    {path: '/resume/:id', name: 'resume', component: Resume, props: true}
 ]
 
 export const router = createRouter({
