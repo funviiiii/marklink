@@ -13,11 +13,15 @@
         <result property="induction" column="induction" jdbcType="DATE"/>
         <result property="department" column="department" jdbcType="VARCHAR"/>
         <result property="role" column="role" jdbcType="VARCHAR"/>
-        <result property="isMarried" column="is_married" jdbcType="TINYINT"/>
+        <result property="isMarried" column="is_married" jdbcType="TINYINT" javaType="Boolean"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.TinyIntHandler"/>
         <result property="resume" column="resume" jdbcType="VARCHAR"/>
-        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-        <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.DateTypeHandler"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.DateTypeHandler"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="TINYINT" javaType="Boolean"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.TinyIntHandler"/>
     </resultMap>
     <insert id="saveOne" parameterType="com.laquanquan.personnel_salary.domain.User">
         INSERT INTO `t_user`
@@ -81,4 +85,39 @@
             </if>
         </trim>
     </insert>
+    <update id="updateOne" parameterType="com.laquanquan.personnel_salary.domain.User">
+        UPDATE `t_user`
+        SET
+        <trim>
+            <if test="user.name != null and user.name != ''">
+                `name`=#{user.name},
+            </if>
+            <if test="user.gender != null and user.gender != ''">
+                `gender`=#{user.gender},
+            </if>
+            <if test="user.birthday != null">
+                `birthday`=#{user.birthday},
+            </if>
+            <if test="user.induction != null">
+                `induction`=#{user.induction},
+            </if>
+            <if test="user.department != null">
+                `department`=#{user.department},
+            </if>
+            <if test="user.role != null">
+                `role`=#{user.role},
+            </if>
+            <if test="user.isMarried != null">
+                `is_married`=#{user.isMarried},
+            </if>
+            <if test="user.resume != null">
+                `resume`=#{user.resume},
+            </if>
+        </trim>
+        `update_time`=NOW()
+        WHERE `uid`=#{user.uid} AND `is_deleted`=0
+    </update>
+    <select id="selectByUid" resultMap="BaseResultMap">
+        SELECT `uid`, `name`, `gender`, `birthday`, `induction`, `department`, `role`, `is_married`, `resume` FROM `t_user` WHERE `uid`=#{uid} LIMIT 1
+    </select>
 </mapper>

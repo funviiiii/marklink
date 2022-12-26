@@ -63,10 +63,10 @@ function signIn() {
         localStorage.setItem("token", res.data["content"]);
         router.push("/index");
       } else {
-        ElNotification.success("登录失败，请检查信息是否有误！");
+        ElNotification.warning("登录失败，请检查信息是否有误！");
       }
     }).catch(() => {
-      ElNotification.success("登录失败，请检查信息是否有误！");
+      ElNotification.warning("登录失败，请检查信息是否有误！");
     })
   }
 }

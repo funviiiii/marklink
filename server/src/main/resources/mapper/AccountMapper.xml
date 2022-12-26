@@ -11,9 +11,12 @@
         <result property="password" column="password" jdbcType="VARCHAR"/>
         <result property="email" column="email" jdbcType="VARCHAR"/>
         <result property="phone" column="phone" jdbcType="VARCHAR"/>
-        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-        <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.DateTypeHandler"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.DateTypeHandler"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="TINYINT" javaType="Boolean"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.TinyIntHandler"/>
     </resultMap>
     <insert id="saveOne" parameterType="com.laquanquan.personnel_salary.domain.Account">
         INSERT INTO `t_account`
@@ -54,6 +57,22 @@
         </trim>
         ;
     </insert>
+    <update id="updateOne">
+        UPDATE `t_account`
+        SET
+        <trim suffixOverrides=",">
+            <if test="account.password != null and account.password != ''">
+                `password`=#{account.password},
+            </if>
+            <if test="account.email != null and account.email != ''">
+                `email`=#{account.email},
+            </if>
+            <if test="account.phone != null and account.phone != ''">
+                `phone`=#{account.phone},
+            </if>
+        </trim>
+        WHERE `uid`=#{account.uid} AND `is_deleted`=0
+    </update>
     <select id="selectOne" resultMap="BaseResultMap"
             parameterType="com.laquanquan.personnel_salary.domain.Account">
         SELECT `uid`,`username`,`email`,`phone` FROM `t_account`

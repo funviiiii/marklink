@@ -5,11 +5,24 @@
 <mapper namespace="com.laquanquan.personnel_salary.mapper.ResumeMapper">
 
     <resultMap id="BaseResultMap" type="com.laquanquan.personnel_salary.domain.Resume">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="rid" column="rid" jdbcType="VARCHAR"/>
-            <result property="content" column="content" jdbcType="VARCHAR"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-            <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="rid" column="rid" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.DateTypeHandler"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.DateTypeHandler"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="TINYINT" javaType="Boolean"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.TinyIntHandler"/>
     </resultMap>
+    <insert id="createOne" parameterType="com.laquanquan.personnel_salary.domain.Resume">
+        INSERT INTO `t_resume`(`rid`, `content`)
+        VALUES (#{resume.rid}, #{resume.content})
+    </insert>
+    <update id="updateOne" parameterType="com.laquanquan.personnel_salary.domain.Resume">
+        UPDATE `t_resume`
+        SET `content`=#{resume.content}
+        WHERE `rid` = #{resume.rid}
+          AND `is_deleted` = 0
+    </update>
 </mapper>

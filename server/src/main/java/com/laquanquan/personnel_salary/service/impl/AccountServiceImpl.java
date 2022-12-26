@@ -15,9 +15,9 @@ import com.laquanquan.personnel_salary.utils.Md5Utils;
 import com.laquanquan.personnel_salary.utils.RandomStringBuilder;
 import com.laquanquan.personnel_salary.utils.TokenBuilder;
 import com.laquanquan.personnel_salary.utils.WebResponseBody;
+import com.laquanquan.personnel_salary.vo.PasswordUpdateVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.nio.file.AccessDeniedException;
@@ -42,13 +42,14 @@ public class AccountServiceImpl implements AccountService {
     private ObjectMapper objectMapper;
 
     @Override
-    public String getAccount(Account account) {
+    public WebResponseBody<Account> getAccount(Account account) {
         Account tmp = accountMapper.selectOne(account);
         if (tmp == null) {
             log.warn("找不到相应的账户");
             throw new DataNotFoundException("找不到相应的账户");
         }
-        return tmp.getUid();
+        tmp.setPassword("****************");
+        return new WebResponseBody<>("获取用户账户成功", tmp);
     }
 
 
@@ -117,7 +118,8 @@ public class AccountServiceImpl implements AccountService {
         tmp.setPassword(null);
 
         // 查询是否存在该账户
-        if (accountMapper.selectOne(tmp) == null) {
+        tmp = accountMapper.selectOne(tmp);
+        if (tmp == null) {
             throw new DataNotFoundException("不存在该用户，请检查用户名是否正确!");
         }
 
@@ -131,11 +133,28 @@ public class AccountServiceImpl implements AccountService {
         // 密码正确，构造token并返回
         // token包含的信息内容: 用户id
         Map<String, Object> payload = new HashMap<>(1);
-        payload.put("uid", account.getUid());
+        payload.put("uid", tmp.getUid());
 
         String token = TokenBuilder.build(payload, 24 * 7);
 
         return new WebResponseBody<>("登录成功", token);
+    }
+
+    @Override
+    public WebResponseBody<Object> updatePassword(PasswordUpdateVO passwordUpdateVO) throws AccessDeniedException {
+        // 校验原密码是否通过
+        Account account = new Account();
+        account.setUid(passwordUpdateVO.getUid());
+        account.setPassword(Md5Utils.encode(passwordUpdateVO.getOldPassword()));
+        if (accountMapper.selectOne(account)== null) {
+            // 校验不通过
+            throw new AccessDeniedException("原密码不正确，请重试");
+        }
+
+        // 修改密码
+        account.setPassword(Md5Utils.encode(passwordUpdateVO.getNewPassword()));
+        accountMapper.updateOne(account);
+        return new WebResponseBody<>("修改密码成功");
     }
 
     /**

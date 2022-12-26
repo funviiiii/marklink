@@ -5,11 +5,33 @@
 <mapper namespace="com.laquanquan.personnel_salary.mapper.RoleMapper">
 
     <resultMap id="BaseResultMap" type="com.laquanquan.personnel_salary.domain.Role">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="rid" column="rid" jdbcType="VARCHAR"/>
-            <result property="roleName" column="role_name" jdbcType="VARCHAR"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-            <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="rid" column="rid" jdbcType="VARCHAR"/>
+        <result property="roleName" column="role_name" jdbcType="VARCHAR"/>
+        <result property="personnelRight" column="personnel_right" jdbcType="TINYINT" javaType="Boolean"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.TinyIntHandler"/>
+        <result property="salaryRight" column="salary_right" jdbcType="TINYINT" javaType="Boolean"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.TinyIntHandler"/>
+        <result property="infoRight" column="info_right" jdbcType="TINYINT" javaType="Boolean"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.TinyIntHandler"/>
+        <result property="advanceRight" column="advance_right" jdbcType="TINYINT" javaType="Boolean"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.TinyIntHandler"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.DateTypeHandler"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.DateTypeHandler"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="TINYINT" javaType="Boolean"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.TinyIntHandler"/>
     </resultMap>
+    <select id="selectByRid" resultMap="BaseResultMap">
+        SELECT `rid`, `role_name`, `personnel_right`, `salary_right`, `info_right`, `advance_right`
+        FROM `t_role`
+        WHERE `rid` = #{rid}
+          AND `is_deleted` = 0
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT `rid`, `role_name`, `personnel_right`, `salary_right`, `info_right`, `advance_right`
+        FROM `t_role`
+        WHERE `is_deleted` = 0
+    </select>
 </mapper>

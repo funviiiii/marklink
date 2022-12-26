@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 /**
- * @author Zyxxxxxi
- * @version 1.0.0
- * @createDate 2022/10/31
- * @since 1.0.0
+ * @author lqq
  */
 @Data
 @AllArgsConstructor
