@@ -15,4 +15,14 @@
         <result property="isDeleted" column="is_deleted" jdbcType="TINYINT" javaType="Boolean"
                 typeHandler="com.laquanquan.personnel_salary.typehandler.TinyIntHandler"/>
     </resultMap>
+    <insert id="createOne" parameterType="com.laquanquan.personnel_salary.domain.Resume">
+        INSERT INTO `t_resume`(`rid`, `content`)
+        VALUES (#{resume.rid}, #{resume.content})
+    </insert>
+    <update id="updateOne" parameterType="com.laquanquan.personnel_salary.domain.Resume">
+        UPDATE `t_resume`
+        SET `content`=#{resume.content}
+        WHERE `rid` = #{resume.rid}
+          AND `is_deleted` = 0
+    </update>
 </mapper>

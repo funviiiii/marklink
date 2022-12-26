@@ -98,8 +98,20 @@
             <if test="user.birthday != null">
                 `birthday`=#{user.birthday},
             </if>
+            <if test="user.induction != null">
+                `induction`=#{user.induction},
+            </if>
+            <if test="user.department != null">
+                `department`=#{user.department},
+            </if>
+            <if test="user.role != null">
+                `role`=#{user.role},
+            </if>
             <if test="user.isMarried != null">
                 `is_married`=#{user.isMarried},
+            </if>
+            <if test="user.resume != null">
+                `resume`=#{user.resume},
             </if>
         </trim>
         `update_time`=NOW()

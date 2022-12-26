@@ -80,6 +80,9 @@
             >
               <el-checkbox :disabled="!isWriting" v-model="info.isMarried"></el-checkbox>
             </el-form-item>
+            <el-form-item>
+              <el-button @click="editResume">{{ info.resume == null ? '创建简历' : '修改简历' }}</el-button>
+            </el-form-item>
           </el-form>
         </el-col>
       </el-row>
@@ -117,6 +120,7 @@ import {onMounted, reactive, ref, watch} from "vue";
 import axios from "../utils/axios.js";
 import dayjs from "dayjs";
 import {ElMessage} from "element-plus";
+import {useRouter} from "vue-router";
 
 let isWriting = ref(false);
 
@@ -124,9 +128,19 @@ const department = ref([]);
 
 const role = ref([]);
 
+let router = useRouter();
+
 let updateBtnInfo = ref("修改信息");
 
 let dialogVisible = ref(false);
+
+function editResume() {
+  if (info.resume != null) {
+    router.push(`/resume/${info.resume}?editable=true`)
+  } else {
+    router.push("/resume?editable=true")
+  }
+}
 
 const passwordForm = reactive({
   oldPassword: "",

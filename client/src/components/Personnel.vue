@@ -19,7 +19,7 @@
                 link
                 type="primary"
                 size="small"
-                @click="showResume(scope.$index)"
+                @click="router.push(`/resume/${data[scope.$index]['resume']}?editable=false`)"
             >
               查看简历
             </el-button>
@@ -156,10 +156,6 @@ function edit(index) {
   editBoardForm.role = data.value[index].role;
   editBoardForm.isMarried = data.value[index].isMarried;
   editBoardForm.resume = data.value[index].resume;
-}
-
-function showResume(index) {
-  // TODO 展示简历
 }
 
 const editBoardForm = reactive({
