@@ -29,6 +29,15 @@ public interface SalaryMapper {
      * @return 查询到的工资列表
      */
     List<SalaryVO> selectListByDepartment(List<UserDataVO> userList);
+
+
+    /**
+     * 更新一条工资信息
+     *
+     * @param salary 工资信息
+     * @return 影响的行数
+     */
+    int updateOne(SalaryVO salary);
 }
 
 

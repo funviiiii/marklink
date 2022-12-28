@@ -34,24 +34,18 @@
           <el-form-item label="奖金">
             <el-input-number v-model="dialogForm.reward"></el-input-number>
           </el-form-item>
-          <el-form-item label="应付工资">
-            <el-input-number v-model="dialogForm.shouldPay"></el-input-number>
-          </el-form-item>
           <el-form-item label="花费">
             <el-input-number v-model="dialogForm.cost"></el-input-number>
           </el-form-item>
           <el-form-item label="保险">
             <el-input-number v-model="dialogForm.insurance"></el-input-number>
           </el-form-item>
-          <el-form-item label="实际工资">
-            <el-input-number v-model="dialogForm.realSalary"></el-input-number>
-          </el-form-item>
         </el-form>
         <template #footer>
           <span class="dialog-footer">
             <el-button @click="editBoardVisible = false">取消</el-button>
-            <el-button type="primary" @click="editBoardVisible = false">
-              Confirm
+            <el-button type="primary" @click="submit">
+              确定更改
             </el-button>
           </span>
         </template>
@@ -73,24 +67,48 @@ let data = ref([])
 
 let editBoardVisible = ref(false);
 
+function submit() {
+  editBoardVisible.value = false;
+  axios({
+    url: "/salary",
+    method: "PUT",
+    data: dialogForm
+  }).then(res => {
+    if (res.status === 200) {
+      data.value.forEach(e => {
+        if (e["uid"] === dialogForm.uid) {
+          e["basicSalary"] = dialogForm.basicSalary.toFixed(2);
+          e["allowance"] = dialogForm.allowance.toFixed(2);
+          e["reward"] = dialogForm.reward.toFixed(2);
+          e["cost"] = dialogForm.cost.toFixed(2);
+          e["insurance"] = dialogForm.insurance.toFixed(2);
+          e["shouldPay"] = (dialogForm.basicSalary + dialogForm.allowance + dialogForm.reward).toFixed(2);
+          e["realSalary"] = (Number(e["shouldPay"]) - dialogForm.cost - dialogForm.insurance).toFixed(2);
+        }
+      })
+    }
+  })
+}
+
 let dialogForm = reactive({
+  uid: "",
   basicSalary: 0.00,
   allowance: 0.00,
   reward: 0.00,
-  shouldPay: 0.00,
   cost: 0.00,
-  insurance: 0.00,
-  realSalary: 0.00
+  insurance: 0.00
 })
 
 function edit(index) {
-  dialogForm.basicSalary = data[index]["basicSalary"]
-  dialogForm.allowance = data[index]["allowance"]
-  dialogForm.reward = data[index]["reward"]
-  dialogForm.shouldPay = dialogForm.basicSalary + dialogForm.allowance + dialogForm.reward
-  dialogForm.cost = data[index]["cost"]
-  dialogForm.insurance = data[index]["insurance"]
-  dialogForm.realSalary = dialogForm.shouldPay - dialogForm.cost - dialogForm.insurance
+  editBoardVisible.value = true;
+  dialogForm.uid = data.value[index]["uid"];
+  dialogForm.basicSalary = Number(data.value[index]["basicSalary"]);
+  dialogForm.allowance = Number(data.value[index]["allowance"]);
+  dialogForm.reward = Number(data.value[index]["reward"]);
+  dialogForm.shouldPay = dialogForm.basicSalary + dialogForm.allowance + dialogForm.reward;
+  dialogForm.cost = Number(data.value[index]["cost"]);
+  dialogForm.insurance = Number(data.value[index]["insurance"]);
+  dialogForm.realSalary = dialogForm.shouldPay - dialogForm.cost - dialogForm.insurance;
 }
 
 onMounted(() => {

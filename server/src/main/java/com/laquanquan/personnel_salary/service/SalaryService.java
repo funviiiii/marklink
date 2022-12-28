@@ -27,4 +27,11 @@ public interface SalaryService {
      * @return 返回响应体
      */
     WebResponseBody<SalaryVO> getOne(String token);
+
+    /**
+     * 更新一条工资信息
+     *
+     * @param salary 待更新的工资信息
+     */
+    void updateSalary(SalaryVO salary) throws AccessDeniedException;
 }

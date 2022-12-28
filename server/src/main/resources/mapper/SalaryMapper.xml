@@ -46,6 +46,19 @@
         <result property="realSalary" column="realSalary" jdbcType="DECIMAL"
                 typeHandler="com.laquanquan.personnel_salary.typehandler.DecimalHandler"/>
     </resultMap>
+    <update id="updateOne" parameterType="com.laquanquan.personnel_salary.vo.SalaryVO">
+        UPDATE `t_salary`
+        SET `basic_salary`=#{basicSalary},
+            `allowance`=#{allowance},
+            `reward`=#{reward},
+            `should_pay`=#{shouldPay},
+            `cost`=#{cost},
+            `insurance`=#{insurance},
+            `real_salary`=#{realSalary},
+            `update_time`=NOW()
+        WHERE `uid` = #{uid}
+          AND `is_deleted` = 0
+    </update>
 
     <select id="selectListByDepartment" resultMap="SalaryResultMap"
             parameterType="arraylist">

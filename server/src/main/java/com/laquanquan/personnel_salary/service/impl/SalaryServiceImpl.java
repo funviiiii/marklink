@@ -15,6 +15,7 @@ import com.laquanquan.personnel_salary.vo.UserDataVO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.nio.file.AccessDeniedException;
 import java.util.List;
 
@@ -74,5 +75,27 @@ public class SalaryServiceImpl implements SalaryService {
         SalaryVO salary = salaryMapper.selectOneByUid(user.getUid());
         salary.setName(user.getName());
         return new WebResponseBody<>("获取工资成功", salary);
+    }
+
+    @Override
+    public void updateSalary(SalaryVO salary) throws AccessDeniedException {
+        User user = userMapper.selectByUid(salary.getUid());
+        if (salary.getUid() == null || user == null) {
+            throw new DataNotFoundException("uid不存在，更新工资数据失败");
+        }
+
+        Role role = roleMapper.selectByRid(user.getRole());
+        if (!role.getSalaryRight()) {
+            throw new AccessDeniedException("权限不足，无法更新工资");
+        }
+
+        // 对应付款和实际工资进行计算
+        salary.setShouldPay(String.format("%.2f", new BigDecimal(salary.getBasicSalary()).add(
+                new BigDecimal(salary.getAllowance()).add(
+                        new BigDecimal(salary.getReward())))));
+        salary.setRealSalary(String.format("%.2f", new BigDecimal(salary.getShouldPay()).add(
+                new BigDecimal("-" + salary.getCost())).add(new BigDecimal("-" + salary.getInsurance()))));
+
+        salaryMapper.updateOne(salary);
     }
 }
