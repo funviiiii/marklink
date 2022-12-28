@@ -19,7 +19,7 @@ public interface SalaryMapper {
      * @param uid 用户编号
      * @return 查询到的工资对象
      */
-    @Select("SELECT `uid`, `basic_salary`, `allowance`, `reward`, `should_pay`, `cost`, `insurance`, `real_salary` FROM `t_salary` WHERE `uid`=#{uid} AND `is_deleted`=0 LIMIT 1")
+    @Select("SELECT `uid`, `basic_salary` AS 'basicSalary' , `allowance`, `reward`, `should_pay` AS 'shouldPay' , `cost`, `insurance`, `real_salary` AS 'realSalary' FROM `t_salary` WHERE `uid`=#{uid} AND `is_deleted`=0 LIMIT 1")
     SalaryVO selectOneByUid(String uid);
 
     /**

@@ -80,6 +80,9 @@
             >
               <el-checkbox :disabled="!isWriting" v-model="info.isMarried"></el-checkbox>
             </el-form-item>
+            <el-form-item label="工资：">
+              ￥{{ info.salary }}
+            </el-form-item>
             <el-form-item>
               <el-button @click="editResume">{{ info.resume == null ? '创建简历' : '修改简历' }}</el-button>
             </el-form-item>
@@ -157,7 +160,8 @@ const info = reactive({
   department: "",
   role: "",
   isMarried: false,
-  resume: ""
+  resume: "",
+  salary: ""
 })
 
 onMounted(() => {
@@ -239,6 +243,15 @@ const getInfo = () => {
     }
   }).catch(res => {
     ElMessage.error(res.response.data["msg"])
+  })
+  // 获取工资信息
+  axios({
+    url: `/salary/one?token=${token}`,
+    method: "GET"
+  }).then(res => {
+    if (res.status === 200) {
+      info.salary = res.data["content"]["realSalary"]
+    }
   })
 }
 
