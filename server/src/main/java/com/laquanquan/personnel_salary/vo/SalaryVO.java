@@ -5,31 +5,37 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 /**
  * @author lqq
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDataVO {
+public class SalaryVO {
     @JsonProperty
     private String uid;
+
     @JsonProperty
     private String name;
+
     @JsonProperty
-    private String gender;
+    private String basicSalary;
+
     @JsonProperty
-    private Date birthday;
+    private String allowance;
+
     @JsonProperty
-    private Date induction;
+    private String reward;
+
     @JsonProperty
-    private String department;
+    private String shouldPay;
+
     @JsonProperty
-    private String role;
+    private String cost;
+
     @JsonProperty
-    private Boolean isMarried;
+    private String insurance;
+
     @JsonProperty
-    private String resume;
+    private String realSalary;
 }

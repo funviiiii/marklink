@@ -37,7 +37,7 @@ public interface UserMapper {
      * @param department 用于查询的部门编号
      * @return 返回对应部门下的所有职员
      */
-    @Select("SELECT `name`, `gender`, `birthday`, `induction`, `department`, `role`, `is_married` AS 'isMarried' , `resume` FROM `t_user` WHERE `department`=#{department} AND `is_deleted`=0")
+    @Select("SELECT `uid`, `name`, `gender`, `birthday`, `induction`, `department`, `role`, `is_married` AS 'isMarried' , `resume` FROM `t_user` WHERE `department`=#{department} AND `is_deleted`=0")
     List<UserDataVO> selectByDepartment(String department);
 
     /**

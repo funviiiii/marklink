@@ -13,7 +13,7 @@ import java.sql.SQLDataException;
  * @author lqq
  */
 @RestController
-@RequestMapping("resume")
+@RequestMapping("/resume")
 public class ResumeController {
     @Resource
     private ResumeService resumeService;

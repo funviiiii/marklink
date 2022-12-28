@@ -72,9 +72,9 @@
         </el-form>
         <template #footer>
           <span class="dialog-footer">
-            <el-button @click="editBoardVisible = false">Cancel</el-button>
-            <el-button type="primary" @click="editBoardVisible = false">
-              Confirm
+            <el-button @click="editBoardVisible = false">取消</el-button>
+            <el-button type="primary" @click="submit">
+              确认
             </el-button>
           </span>
         </template>
@@ -94,6 +94,22 @@ let departmentSelections = ref([]);
 let roleSelections = ref([]);
 
 let content = ref("abc")
+
+function submit() {
+  // 校验token
+  let token = localStorage.getItem("token");
+  if (token == null) {
+    ElMessage.warning("您还未登录，请先登录");
+    router.push("/account/username");
+    return
+  }
+  // 提交更改
+  axios({
+    url: "/user",
+    method: "PUT",
+    data: editBoardForm
+  })
+}
 
 function loadInfo() {
   // 获取职员信息

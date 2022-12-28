@@ -6,15 +6,21 @@
 
     <resultMap id="BaseResultMap" type="com.laquanquan.personnel_salary.domain.Salary">
         <id property="id" column="id" jdbcType="BIGINT"/>
-        <result property="sid" column="sid" jdbcType="VARCHAR"/>
         <result property="uid" column="uid" jdbcType="VARCHAR"/>
-        <result property="basicSalary" column="basic_salary" jdbcType="DECIMAL"/>
-        <result property="allowance" column="allowance" jdbcType="DECIMAL"/>
-        <result property="reward" column="reward" jdbcType="DECIMAL"/>
-        <result property="shouldPay" column="should_pay" jdbcType="DECIMAL"/>
-        <result property="cost" column="cost" jdbcType="DECIMAL"/>
-        <result property="insurance" column="insurance" jdbcType="DECIMAL"/>
-        <result property="realSalary" column="real_salary" jdbcType="DECIMAL"/>
+        <result property="basicSalary" column="basic_salary" jdbcType="DECIMAL"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.DecimalHandler"/>
+        <result property="allowance" column="allowance" jdbcType="DECIMAL"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.DecimalHandler"/>
+        <result property="reward" column="reward" jdbcType="DECIMAL"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.DecimalHandler"/>
+        <result property="shouldPay" column="should_pay" jdbcType="DECIMAL"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.DecimalHandler"/>
+        <result property="cost" column="cost" jdbcType="DECIMAL"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.DecimalHandler"/>
+        <result property="insurance" column="insurance" jdbcType="DECIMAL"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.DecimalHandler"/>
+        <result property="realSalary" column="real_salary" jdbcType="DECIMAL"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.DecimalHandler"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"
                 typeHandler="com.laquanquan.personnel_salary.typehandler.DateTypeHandler"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"
@@ -22,4 +28,35 @@
         <result property="isDeleted" column="is_deleted" jdbcType="TINYINT" javaType="Boolean"
                 typeHandler="com.laquanquan.personnel_salary.typehandler.TinyIntHandler"/>
     </resultMap>
+
+    <resultMap id="SalaryResultMap" type="com.laquanquan.personnel_salary.vo.SalaryVO">
+        <result property="uid" column="uid" jdbcType="VARCHAR"/>
+        <result property="basicSalary" column="basicSalary" jdbcType="DECIMAL"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.DecimalHandler"/>
+        <result property="allowance" column="allowance" jdbcType="DECIMAL"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.DecimalHandler"/>
+        <result property="reward" column="reward" jdbcType="DECIMAL"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.DecimalHandler"/>
+        <result property="shouldPay" column="shouldPay" jdbcType="DECIMAL"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.DecimalHandler"/>
+        <result property="cost" column="cost" jdbcType="DECIMAL"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.DecimalHandler"/>
+        <result property="insurance" column="insurance" jdbcType="DECIMAL"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.DecimalHandler"/>
+        <result property="realSalary" column="realSalary" jdbcType="DECIMAL"
+                typeHandler="com.laquanquan.personnel_salary.typehandler.DecimalHandler"/>
+    </resultMap>
+
+    <select id="selectListByDepartment" resultMap="SalaryResultMap"
+            parameterType="arraylist">
+        SELECT `uid`,`basic_salary` AS 'basicSalary', `allowance`, `reward`, `should_pay` AS 'shouldPay', `cost`,
+        `insurance`, `real_salary` AS 'realSalary'
+        FROM `t_salary`
+        <where>`uid` IN
+            <foreach collection="list" item="item" open="(" close=")" separator=",">
+                #{item.uid}
+            </foreach>
+            AND `is_deleted` = 0
+        </where>
+    </select>
 </mapper>
