@@ -10,6 +10,7 @@ import com.laquanquan.personnel_salary.service.UserService;
 import com.laquanquan.personnel_salary.utils.TokenBuilder;
 import com.laquanquan.personnel_salary.utils.WebResponseBody;
 import com.laquanquan.personnel_salary.vo.UserDataVO;
+import lombok.val;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -64,6 +65,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public WebResponseBody<Object> updateUser(User user) throws SQLDataException {
+        // 将数据内容更新为对应的编号而不是中文
+        Department department = departmentMapper.selectByName(user.getDepartment());
+        Role role = roleMapper.selectByName(user.getRole());
+
+        user.setDepartment(department.getDid());
+        user.setRole(role.getRid());
+
         user.setGender(switch (user.getGender()) {
             case "男" -> "m";
             case "女" -> "f";

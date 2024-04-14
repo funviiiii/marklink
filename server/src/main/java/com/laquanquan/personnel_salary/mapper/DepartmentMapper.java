@@ -24,6 +24,14 @@ public interface DepartmentMapper {
      * @return 部门列表
      */
     List<Department> selectAll();
+
+    /**
+     * 根据部门名查询一个部门对象
+     *
+     * @param departmentName 部门编号
+     * @return 查询到的部门对象
+     */
+    Department selectByName(String departmentName);
 }
 
 

@@ -92,7 +92,7 @@ import dayjs from "dayjs";
 
 let departmentSelections = ref([]);
 let roleSelections = ref([]);
-
+let info
 let content = ref("abc")
 
 function submit() {
@@ -118,6 +118,7 @@ function loadInfo() {
     method: "GET"
   }).then(res => {
     if (res.status === 200) {
+      info = res.data['content'];
       for (let item of res.data["content"]) {
         item["birthday"] = dayjs(item["birthday"]).format("YYYY-MM-DD")
         item["induction"] = dayjs(item["induction"]).format("YYYY-MM-DD")
@@ -164,6 +165,7 @@ function loadInfo() {
 function edit(index) {
   editBoardVisible.value = true;
   console.log(index)
+  editBoardForm.uid = data.value[index].uid;
   editBoardForm.name = data.value[index].name;
   editBoardForm.gender = data.value[index].gender;
   editBoardForm.birthday = data.value[index].birthday;

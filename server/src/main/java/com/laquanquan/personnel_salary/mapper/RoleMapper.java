@@ -20,6 +20,14 @@ public interface RoleMapper {
     Role selectByRid(String rid);
 
     List<Role> selectAll();
+
+    /**
+     * 根据职位名查询一个职位
+     *
+     * @param roleName 用于查询的职位编号
+     * @return 返回的职位对象
+     */
+    Role selectByName(String roleName);
 }
 
 

@@ -16,12 +16,21 @@
                 typeHandler="com.laquanquan.personnel_salary.typehandler.TinyIntHandler"/>
     </resultMap>
     <select id="selectByDid" resultMap="BaseResultMap">
-        SELECT `did`, `department_name` FROM `t_department` WHERE `did`=#{did} AND `is_deleted`=0 LIMIT 1
+        SELECT `did`, `department_name`
+        FROM `t_department`
+        WHERE `did` = #{did}
+          AND `is_deleted` = 0 LIMIT 1
     </select>
     <select id="selectAll" resultMap="BaseResultMap">
         SELECT `did`, `department_name`
         FROM `t_department`
         WHERE `is_deleted` = 0
+    </select>
+    <select id="selectByName" resultMap="BaseResultMap">
+        SELECT `did`, `department_name`
+        FROM `t_department`
+        WHERE `department_name` = #{departmentName}
+          AND `is_deleted` = 0 LIMIT 1
     </select>
 
 </mapper>

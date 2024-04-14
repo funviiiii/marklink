@@ -34,4 +34,10 @@
         FROM `t_role`
         WHERE `is_deleted` = 0
     </select>
+    <select id="selectByName" resultMap="BaseResultMap">
+        SELECT `rid`, `role_name`, `personnel_right`, `salary_right`, `info_right`, `advance_right`
+        FROM `t_role`
+        WHERE `role_name` = #{roleName}
+          AND `is_deleted` = 0
+    </select>
 </mapper>
