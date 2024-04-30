@@ -5,7 +5,6 @@
                :style="{display: authController.menu()}"
       >
         <router-link :to="{name: 'personal'}" class="menu-link"
-                     :style="{display: authController.personnel}"
         >
           <el-menu-item index="1">基本信息</el-menu-item>
         </router-link>
@@ -35,6 +34,7 @@
         >
           <el-menu-item index="5">高级管理</el-menu-item>
         </router-link>
+        <el-menu-item index="6" @click="logout">退出登录</el-menu-item>
       </el-menu>
     </el-header>
     <el-main>
@@ -50,7 +50,7 @@
 import axios from "../utils/axios.js";
 import {onMounted, reactive} from "vue";
 import {useRouter} from "vue-router";
-import {ElMessage} from "element-plus";
+import {ElMessage, ElMessageBox} from "element-plus";
 
 const authController = reactive({
   personnel: 'none',
@@ -90,6 +90,9 @@ const checkAuth = () => {
       authController.salary = res.data['content']['salaryRight'] ? 'flex' : 'none';
       authController.info = res.data['content']['infoRight'] ? 'flex' : 'none';
       authController.advance = res.data['content']['advanceRight'] ? 'flex' : 'none';
+
+      // 存入当前用户的角色信息
+      sessionStorage.setItem('role', JSON.stringify(res.data['content']))
     } else {
       authController.personnel = 'none';
       authController.salary = 'none';
@@ -108,6 +111,34 @@ const checkAuth = () => {
     router.push("/account");
     ElMessage.error("登录信息有误，请重新登录后重试");
   })
+}
+
+const logout = () => {
+  // 弹窗确认退出登录
+  ElMessageBox.confirm(
+      '确认要退出登录吗？',
+      {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning',
+      }
+  )
+      .then(() => {
+        // 删除登录态
+        localStorage.removeItem("token");
+        sessionStorage.removeItem('role');
+
+        // 弹窗提醒
+        ElMessage({
+          type: 'success',
+          message: '你已退出登录',
+        })
+
+        // 退出到登录界面
+        router.push("/account");
+      })
+      .catch(() => {
+      })
 }
 
 onMounted(() => {

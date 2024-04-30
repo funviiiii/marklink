@@ -62,7 +62,9 @@
             </el-select>
           </el-form-item>
           <el-form-item label="职位">
-            <el-select v-model="editBoardForm.role">
+            <el-select v-model="editBoardForm.role"
+                       :disabled="isSM"
+            >
               <el-option v-for="(item, index) in roleSelections" :value="item" :index="index"></el-option>
             </el-select>
           </el-form-item>
@@ -94,6 +96,7 @@ let departmentSelections = ref([]);
 let roleSelections = ref([]);
 let info
 let content = ref("abc")
+let isSM = JSON.parse(sessionStorage.getItem('role'))['rid'] !== 'rid_super' && JSON.parse(sessionStorage.getItem('role'))['rid'] !== 'rid_manager'
 
 function submit() {
   // 校验token
@@ -152,7 +155,10 @@ function loadInfo() {
   }).then(res => {
     if (res.status === 200) {
       for (let item of res.data["content"]) {
-        roleSelections.value.push(item["roleName"]);
+        // 超级管理员不能被任命；只有当当前身份为超级管理员时，可以任命管理员
+        if (item['rid'] !== 'rid_super' || (item['rid'] === 'rid_manager' && JSON.parse(sessionStorage.getItem('role'))['rid'] === 'rid_super')) {
+          roleSelections.value.push(item["roleName"]);
+        }
       }
     } else {
       ElMessage.warning(res.data["msg"]);
