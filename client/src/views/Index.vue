@@ -2,7 +2,6 @@
   <el-container>
     <el-header>
       <el-menu mode="horizontal"
-               :style="{display: authController.menu()}"
       >
         <router-link :to="{name: 'personal'}" class="menu-link"
         >
@@ -27,12 +26,10 @@
         >
           <el-menu-item index="4">基础信息管理</el-menu-item>
         </router-link>
-        <router-link :to="{name: 'advance'}"
+        <router-link :to="{name: 'announcement'}"
                      class="menu-link"
-                     :style="{display: authController.advance}"
-                     :right="authController.advance"
         >
-          <el-menu-item index="5">高级管理</el-menu-item>
+          <el-menu-item index="5">公告</el-menu-item>
         </router-link>
         <el-menu-item index="6" @click="logout">退出登录</el-menu-item>
       </el-menu>
@@ -57,17 +54,6 @@ const authController = reactive({
   salary: 'none',
   info: 'none',
   advance: 'none',
-  menu() {
-    if (
-        this.personnel === 'none'
-        && this.info === 'none'
-        && this.salary === 'none'
-        && this.advance === 'none'
-    ) {
-      return 'none'
-    }
-    return 'flex'
-  }
 });
 
 const router = useRouter();

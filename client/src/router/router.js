@@ -6,9 +6,9 @@ import EmailForm from '/src/components/EmailForm.vue'
 import Personnel from '/src/components/Personnel.vue'
 import Salary from '/src/components/Salary.vue'
 import Info from '/src/components/info.vue'
-import Advance from '/src/components/advance.vue'
 import PersonalInfo from "../components/PersonalInfo.vue";
 import Resume from "../views/Resume.vue";
+import Announcement from "../components/Announcement.vue";
 
 const routes = [
     {path: '/', redirect: '/index'},
@@ -17,8 +17,8 @@ const routes = [
             {path: 'personal', name: 'personal', component: PersonalInfo},
             {path: 'personnel', name: 'personnel', component: Personnel},
             {path: 'salary', name: 'salary', component: Salary},
+            {path: 'announcement', name: 'announcement', component: Announcement},
             {path: 'info', name: 'info', component: Info},
-            {path: 'advance', name: 'advance', component: Advance},
         ], redirect: "/index/personal"
     },
     {

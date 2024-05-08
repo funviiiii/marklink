@@ -4,7 +4,6 @@ import com.laquanquan.personnel_salary.domain.Account;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 
 /**
  * @author lqq

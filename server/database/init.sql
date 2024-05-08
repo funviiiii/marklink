@@ -16,6 +16,8 @@ DROP TABLE IF EXISTS `t_log`;
 
 DROP TABLE IF EXISTS `t_level`;
 
+DROP TABLE IF EXISTS `t_announcement`;
+
 CREATE TABLE `t_account`
 (
     `id`          BIGINT AUTO_INCREMENT COMMENT '主键',
@@ -136,6 +138,18 @@ CREATE TABLE `t_level`
     `create_time` DATETIME          NOT NULL DEFAULT NOW() COMMENT '创建时间',
     `update_time` DATETIME          NOT NULL DEFAULT NOW() COMMENT '上次更新时间',
     `is_deleted`  TINYINT UNSIGNED  NOT NULL DEFAULT 0 COMMENT '逻辑删除标识: 已删除(1), 未删除(0)',
+    PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `t_announcement`
+(
+    `id`          BIGINT UNSIGNED AUTO_INCREMENT COMMENT '主键',
+    `title`       VARCHAR(30)      NOT NULL COMMENT '公告标题',
+    `text`        TEXT             NOT NULL COMMENT '正文',
+    `creator`     VARCHAR(30)      NOT NULL COMMENT '创建者用户编号',
+    `create_time` DATETIME         NOT NULL DEFAULT NOW() COMMENT '创建时间',
+    `update_time` DATETIME         NOT NULL DEFAULT NOW() COMMENT '上次更新时间',
+    `is_deleted`  TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '逻辑删除标识: 已删除(1), 未删除(0)',
     PRIMARY KEY (`id`)
 );
 
