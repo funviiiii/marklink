@@ -1,11 +1,18 @@
 package com.laquanquan.personnel_salary.service;
 
+import com.laquanquan.personnel_salary.domain.Announcement;
+import com.laquanquan.personnel_salary.utils.WebResponseBody;
+import com.laquanquan.personnel_salary.vo.AnnouncementVO;
+
+import java.sql.SQLDataException;
+import java.util.List;
 
 /**
-* @author Zyxxxxxi
-* @description 针对表【t_announcement】的数据库操作Service
-* @createDate 2024-05-02 07:22:21
-*/
+ * @author lqq
+ */
 public interface AnnouncementService {
 
+    WebResponseBody<Announcement> create(AnnouncementVO announcement) throws SQLDataException;
+
+    WebResponseBody<List<AnnouncementVO>> getList() throws SQLDataException;
 }

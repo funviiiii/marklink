@@ -1,17 +1,22 @@
 package com.laquanquan.personnel_salary.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.laquanquan.personnel_salary.vo.AnnouncementVO;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 
+ * @author lqq
  * @TableName t_announcement
  */
-@Setter
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Announcement implements Serializable {
     /**
      * 主键
@@ -22,6 +27,7 @@ public class Announcement implements Serializable {
 
 
      */
+    @JsonProperty
     private Long id;
 
     /**
@@ -33,6 +39,7 @@ public class Announcement implements Serializable {
 
 
      */
+    @JsonProperty
     private String title;
 
     /**
@@ -44,6 +51,7 @@ public class Announcement implements Serializable {
 
 
      */
+    @JsonProperty
     private String text;
 
     /**
@@ -55,6 +63,7 @@ public class Announcement implements Serializable {
 
 
      */
+    @JsonProperty
     private String creator;
 
     /**
@@ -66,6 +75,7 @@ public class Announcement implements Serializable {
 
 
      */
+    @JsonIgnore
     private Date createTime;
 
     /**
@@ -77,6 +87,7 @@ public class Announcement implements Serializable {
 
 
      */
+    @JsonIgnore
     private Date updateTime;
 
     /**
@@ -88,7 +99,16 @@ public class Announcement implements Serializable {
 
 
      */
+    @JsonIgnore
     private Integer isDeleted;
 
     private static final long serialVersionUID = 1L;
+
+    public Announcement(AnnouncementVO announcementVO) {
+        this.id = announcementVO.getId();
+        this.title = announcementVO.getTitle();
+        this.text = announcementVO.getText();
+        this.creator = announcementVO.getCreator();
+        this.createTime = announcementVO.getCreateTime();
+    }
 }

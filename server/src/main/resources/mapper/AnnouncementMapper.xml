@@ -13,4 +13,35 @@
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
     </resultMap>
+    <insert id="save" parameterType="com.laquanquan.personnel_salary.domain.Announcement">
+        INSERT INTO `t_announcement`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="announcement.title != null and announcement.title != ''">
+                `title`,
+            </if>
+            <if test="announcement.text != null and announcement.text != ''">
+                `text`,
+            </if>
+            <if test="announcement.creator != null and announcement.creator != ''">
+                `creator`,
+            </if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="announcement.title != null and announcement.title != ''">
+                #{announcement.title},
+            </if>
+            <if test="announcement.text != null and announcement.text != ''">
+                #{announcement.text},
+            </if>
+            <if test="announcement.creator != null and announcement.creator != ''">
+                #{announcement.creator},
+            </if>
+        </trim>
+        ;
+    </insert>
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT `id`, `title`, `text`, `creator`, `create_time`
+        FROM t_announcement
+    </select>
 </mapper>

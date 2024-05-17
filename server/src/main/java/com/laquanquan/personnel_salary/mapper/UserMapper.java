@@ -47,6 +47,14 @@ public interface UserMapper {
      * @return 影响表的行数
      */
     int updateOne(@Param("user") User user);
+
+    /**
+     * 获取所有用户数据
+     *
+     * @return 所有用户数据
+     *
+     * */
+    List<UserDataVO> selectAll();
 }
 
 

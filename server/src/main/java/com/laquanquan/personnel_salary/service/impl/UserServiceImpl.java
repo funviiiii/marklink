@@ -10,13 +10,14 @@ import com.laquanquan.personnel_salary.service.UserService;
 import com.laquanquan.personnel_salary.utils.TokenBuilder;
 import com.laquanquan.personnel_salary.utils.WebResponseBody;
 import com.laquanquan.personnel_salary.vo.UserDataVO;
-import lombok.val;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.nio.file.AccessDeniedException;
 import java.sql.SQLDataException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author lqq
@@ -94,33 +95,64 @@ public class UserServiceImpl implements UserService {
         if (!role.getPersonnelRight()) {
             throw new AccessDeniedException("权限不足，不允许访问！");
         }
+        List<UserDataVO> userData;
 
-        // 获取某部门下的用户列表
-        List<UserDataVO> userData = userMapper.selectByDepartment(user.getDepartment());
+        // 获取部门列表
+        Map<String, String> departments = convertDepartmentListToMap(departmentMapper.selectAll());
 
-        // 获取部门名
-        String department = departmentMapper.selectByDid(user.getDepartment()).getDepartmentName();
+        // 获取职位列表
+        Map<String, String> roles = convertRoleListToMap(roleMapper.selectAll());
 
-        // 查询所有职位信息
-        List<Role> roles = roleMapper.selectAll();
+        if (user.getRole().equals("rid_super")) {
+            // 作为超级管理员，可以获取所有信息
+            userData = userMapper.selectAll();
+        } else {
+            // 不是超级管理员时，根据部门获取本部门的用户列表
+            // 获取某部门下的用户列表
+            userData = userMapper.selectByDepartment(user.getDepartment());
+        }
+        return new WebResponseBody<>("获取用户列表成功",
+                dataProcessing(userData, departments, roles));
+    }
 
-        // 对数据内容进行处理
-        for (UserDataVO item : userData) {
-            item.setDepartment(department);
-            for (Role roleItem : roles) {
-                if (roleItem.getRid().equals(item.getRole())) {
-                    item.setRole(roleItem.getRoleName());
-                    break;
-                }
-            }
+    /**
+     * 将部门列表转化成键值对的形式，方便数据处理（部门ID-部门名）
+     */
+    private Map<String, String> convertDepartmentListToMap(List<Department> departmentList) {
+        Map<String, String> departmentMap = new HashMap<>();
+        for (Department department : departmentList) {
+            departmentMap.put(department.getDid(), department.getDepartmentName());
+        }
+        return departmentMap;
+    }
+
+    /**
+     * 将角色列表转化成键值对的形式，方便数据处理（角色ID-角色名）
+     */
+    private Map<String, String> convertRoleListToMap(List<Role> roleList) {
+        Map<String, String> roleMap = new HashMap<>();
+        for (Role role : roleList) {
+            roleMap.put(role.getRid(), role.getRoleName());
+        }
+        return roleMap;
+    }
+
+    /**
+     * 数据处理：
+     * 将用户列表中的部门ID，角色ID转化为部门名和角色名，并将性别转换成可读的值
+     */
+    private List<UserDataVO> dataProcessing(List<UserDataVO> userList, Map<String, String> departmentMap, Map<String, String> roleMap) {
+        for (UserDataVO userDataVO : userList) {
+            userDataVO.setDepartment(departmentMap.get(userDataVO.getDepartment()));
+            userDataVO.setRole(roleMap.get(userDataVO.getRole()));
             // 将用户对象中的性别信息替换成可读的值
-            item.setGender(switch (user.getGender()) {
+            userDataVO.setGender(switch (userDataVO.getGender()) {
                 case "m" -> "男";
                 case "f" -> "女";
                 case "s" -> "保密";
                 default -> null;
             });
         }
-        return new WebResponseBody<>("获取用户列表成功", userData);
+        return userList;
     }
 }

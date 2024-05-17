@@ -120,4 +120,7 @@
     <select id="selectByUid" resultMap="BaseResultMap">
         SELECT `uid`, `name`, `gender`, `birthday`, `induction`, `department`, `role`, `is_married`, `resume` FROM `t_user` WHERE `uid`=#{uid} LIMIT 1
     </select>
+    <select id="selectAll" resultType="com.laquanquan.personnel_salary.vo.UserDataVO">
+        select `uid`, `name`, `gender`, `birthday`, `induction`, `department`, `role`, `is_married`, `resume` FROM `t_user`
+    </select>
 </mapper>

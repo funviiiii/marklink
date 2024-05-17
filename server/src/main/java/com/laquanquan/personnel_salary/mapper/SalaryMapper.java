@@ -38,6 +38,14 @@ public interface SalaryMapper {
      * @return 影响的行数
      */
     int updateOne(SalaryVO salary);
+
+
+    /**
+     * 查询所有工资信息
+     *
+     * @return 工资数据集
+     */
+    List<SalaryVO> selectAll();
 }
 
 

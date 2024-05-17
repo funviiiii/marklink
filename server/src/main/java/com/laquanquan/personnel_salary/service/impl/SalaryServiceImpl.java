@@ -42,14 +42,24 @@ public class SalaryServiceImpl implements SalaryService {
             throw new DataNotFoundException("token无效，不允许访问");
         }
 
+        List<UserDataVO> users;
+
+        List<SalaryVO> salaryList;
+
         Role role = roleMapper.selectByRid(user.getRole());
-        if (!role.getSalaryRight()) {
+        if (role.getRid().equals("rid_super")) {
+            // 超级管理员
+            users = userMapper.selectAll();
+            salaryList = salaryMapper.selectAll();
+        } else if (role.getSalaryRight()) {
+            // 普通管理员
+            users = userMapper.selectByDepartment(user.getDepartment());
+
+            salaryList = salaryMapper.selectListByDepartment(users);
+
+        } else {
             throw new AccessDeniedException("该用户权限不足，无法获取工资列表");
         }
-
-        List<UserDataVO> users = userMapper.selectByDepartment(user.getDepartment());
-
-        List<SalaryVO> salaryList = salaryMapper.selectListByDepartment(users);
 
         // 给工资列表的名字赋值
         salaryList.forEach(salary -> {
@@ -59,7 +69,7 @@ public class SalaryServiceImpl implements SalaryService {
                 }
             });
         });
-        return new WebResponseBody<>("获取用户列表成功", salaryList);
+        return new WebResponseBody<>("获取用户工资列表成功", salaryList);
     }
 
     @Override
@@ -82,11 +92,6 @@ public class SalaryServiceImpl implements SalaryService {
         User user = userMapper.selectByUid(salary.getUid());
         if (salary.getUid() == null || user == null) {
             throw new DataNotFoundException("uid不存在，更新工资数据失败");
-        }
-
-        Role role = roleMapper.selectByRid(user.getRole());
-        if (!role.getSalaryRight()) {
-            throw new AccessDeniedException("权限不足，无法更新工资");
         }
 
         // 对应付款和实际工资进行计算

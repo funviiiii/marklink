@@ -72,4 +72,17 @@
             AND `is_deleted` = 0
         </where>
     </select>
+    <select id="selectAll" resultMap="SalaryResultMap">
+        SELECT s.`uid`,
+               `basic_salary` AS 'basicSalary',
+               `allowance`,
+               `reward`,
+               `should_pay`   AS 'shouldPay',
+               `cost`,
+               `insurance`,
+               `real_salary`  AS 'realSalary'
+        FROM `t_salary` as s
+                 LEFT JOIN `t_user` as u
+                           ON s.`uid` = u.`uid`
+    </select>
 </mapper>

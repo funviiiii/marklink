@@ -23,7 +23,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-dialog v-model="editBoardVisible" title="Shipping address">
+      <el-dialog v-model="editBoardVisible" title="工资">
         <el-form :model="dialogForm" label-width="100px">
           <el-form-item label="基础工资">
             <el-input-number v-model="dialogForm.basicSalary"></el-input-number>
@@ -75,6 +75,8 @@ function submit() {
     data: dialogForm
   }).then(res => {
     if (res.status === 200) {
+      // 更新成功
+      ElMessage.success("更新工资成功")
       data.value.forEach(e => {
         if (e["uid"] === dialogForm.uid) {
           e["basicSalary"] = dialogForm.basicSalary.toFixed(2);

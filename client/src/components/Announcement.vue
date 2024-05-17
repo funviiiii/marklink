@@ -1,6 +1,8 @@
 <script setup>
-import {reactive, ref} from "vue";
-import axios from "axios";
+import {onMounted, reactive, ref} from "vue";
+import {ElMessage} from "element-plus";
+import axios from "../utils/axios.js";
+import dayjs from "dayjs";
 
 const right = JSON.parse(sessionStorage.getItem('role'))['rid'] === 'rid_manager' || JSON.parse(sessionStorage.getItem('role'))['rid'] === 'rid_super';
 
@@ -19,29 +21,22 @@ let announcementViewerForm = reactive({
   createTime: ''
 })
 
-let announcements = reactive([{
-  id: 1,
-  title: '【公告】关于部门组织架构调整的通知',
-  text: '尊敬的各位同事，根据公司业务发展需求，自即日起，我们将对部门组织架构进行调整。原市场一部与二部合并为市场部，负责人为王XX，请大家积极配合此次调整，共同为公司发展贡献力量。',
-  creator: 'manager1',
-  createTime: '2001.01.01',
-}, {
-  id: 2,
-  title: '【重要通知】启用新办公自动化系统的通知',
-  text: '各位同仁，为提高工作效率，公司决定自本月起启用新的办公自动化系统。请大家务必在下周内完成系统培训，并在日常工作中熟练运用，以便更好地服务于工作。',
-  creator: 'manager1',
-  createTime: '2001.01.01',
-}, {
-  id: 3,
-  title: '【员工关怀】关于年度员工体检报名的通知',
-  text: '关于年度员工体检通知：为关心员工身体健康，公司定于下个月开展年度员工体检活动。请各位同事在规定时间内携带身份证到人事部报名，并按照安排参加体检。请大家务必重视本次体检，确保自己的身体健康。',
-  creator: 'manager1',
-  createTime: '2001.01.01',
-},]);
+let announcements = reactive([]);
 
 function createAnnouncement() {
+  // 创建公告
   announcementForm.creatorToken = localStorage.getItem('token');
-  // todo submit
+  axios({
+    url: '/announcement',
+    method: 'POST',
+    data: announcementForm
+  }).then(res => {
+    ElMessage.success(res.data["msg"]);
+    fetchInfo()
+    announcementCreator.value = false
+  }).catch(res => {
+    ElMessage.warning(res.response.data["msg"]);
+  })
 }
 
 function showAnnouncement(announcement) {
@@ -51,6 +46,27 @@ function showAnnouncement(announcement) {
   announcementViewerForm.createTime = announcement.createTime
   announcementViewer.value = true
 }
+
+function fetchInfo() {
+  // 获取公告
+  axios({
+    url: '/announcement?token=' + localStorage.getItem('token'),
+    method: 'GET'
+  }).then(res => {
+    announcements.length = 0
+    // 载入数据
+    res.data['content'].forEach((item) => {
+      item.createTime = dayjs(item.createTime).format('YYYY-MM-DD HH:mm:ss')
+      announcements.push(item)
+    })
+  }).catch(res => {
+    ElMessage.warning(res.response.data["msg"]);
+  })
+}
+
+onMounted(() => {
+  fetchInfo()
+})
 </script>
 
 <template>
@@ -142,6 +158,7 @@ function showAnnouncement(announcement) {
       <el-main>
         <p>{{ announcementViewerForm.text }}</p>
       </el-main>
+      <el-divider/>
     </el-container>
   </el-dialog>
 </template>
@@ -189,5 +206,15 @@ function showAnnouncement(announcement) {
 
 .announcement-separator {
   margin: 10px;
+}
+
+.alter-text p{
+  color: black;
+  transition: color 0.2s;
+}
+
+.alter-text p:hover{
+  color: #47a4c4;
+  cursor: pointer;
 }
 </style>

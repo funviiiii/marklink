@@ -63,7 +63,7 @@
           </el-form-item>
           <el-form-item label="职位">
             <el-select v-model="editBoardForm.role"
-                       :disabled="isSM"
+                       :disabled="(editBoardForm.role === '管理员' && !isSM) || editBoardForm.role === '超级管理员'"
             >
               <el-option v-for="(item, index) in roleSelections" :value="item" :index="index"></el-option>
             </el-select>
@@ -92,11 +92,11 @@ import {onMounted, reactive, ref, watch} from "vue";
 import axios from "../utils/axios.js";
 import dayjs from "dayjs";
 
-let departmentSelections = ref([]);
-let roleSelections = ref([]);
+let departmentSelections = reactive([]);
+let roleSelections = reactive([]);
 let info
 let content = ref("abc")
-let isSM = JSON.parse(sessionStorage.getItem('role'))['rid'] !== 'rid_super' && JSON.parse(sessionStorage.getItem('role'))['rid'] !== 'rid_manager'
+let isSM = JSON.parse(sessionStorage.getItem('role'))['rid'] === 'rid_super'
 
 function submit() {
   // 校验token
@@ -111,21 +111,29 @@ function submit() {
     url: "/user",
     method: "PUT",
     data: editBoardForm
+  }).then(res => {
+    ElMessage.success("更新数据成功");
+  }).catch(res => {
+    ElMessage.warning(res.response.data['msg']);
   })
+  editBoardVisible.value = false;
+  loadInfo()
 }
 
 function loadInfo() {
+  data.length = 0
+  departmentSelections.length = 0
+  roleSelections.length = 0
   // 获取职员信息
   axios({
     url: `/user?token=${localStorage.getItem("token")}`,
     method: "GET"
   }).then(res => {
     if (res.status === 200) {
-      info = res.data['content'];
       for (let item of res.data["content"]) {
         item["birthday"] = dayjs(item["birthday"]).format("YYYY-MM-DD")
         item["induction"] = dayjs(item["induction"]).format("YYYY-MM-DD")
-        data.value.push(item);
+        data.push(item);
       }
     }
   }).catch(res => {
@@ -139,7 +147,7 @@ function loadInfo() {
   }).then(res => {
     if (res.status === 200) {
       for (let item of res.data["content"]) {
-        departmentSelections.value.push(item["departmentName"]);
+        departmentSelections.push(item["departmentName"]);
       }
     } else {
       ElMessage.warning(res.data["msg"]);
@@ -156,8 +164,8 @@ function loadInfo() {
     if (res.status === 200) {
       for (let item of res.data["content"]) {
         // 超级管理员不能被任命；只有当当前身份为超级管理员时，可以任命管理员
-        if (item['rid'] !== 'rid_super' || (item['rid'] === 'rid_manager' && JSON.parse(sessionStorage.getItem('role'))['rid'] === 'rid_super')) {
-          roleSelections.value.push(item["roleName"]);
+        if ((item['rid'] !== 'rid_super' && item['rid'] !== 'rid_manager') || (item['rid'] !== 'rid_super' && item['rid'] === 'rid_manager')) {
+          roleSelections.push(item["roleName"]);
         }
       }
     } else {
@@ -171,15 +179,15 @@ function loadInfo() {
 function edit(index) {
   editBoardVisible.value = true;
   console.log(index)
-  editBoardForm.uid = data.value[index].uid;
-  editBoardForm.name = data.value[index].name;
-  editBoardForm.gender = data.value[index].gender;
-  editBoardForm.birthday = data.value[index].birthday;
-  editBoardForm.induction = data.value[index].induction;
-  editBoardForm.department = data.value[index].department;
-  editBoardForm.role = data.value[index].role;
-  editBoardForm.isMarried = data.value[index].isMarried;
-  editBoardForm.resume = data.value[index].resume;
+  editBoardForm.uid = data[index].uid;
+  editBoardForm.name = data[index].name;
+  editBoardForm.gender = data[index].gender;
+  editBoardForm.birthday = data[index].birthday;
+  editBoardForm.induction = data[index].induction;
+  editBoardForm.department = data[index].department;
+  editBoardForm.role = data[index].role;
+  editBoardForm.isMarried = data[index].isMarried;
+  editBoardForm.resume = data[index].resume;
 }
 
 const editBoardForm = reactive({
@@ -201,7 +209,7 @@ watch(editBoardVisible, value => {
   }
 }, {deep: true})
 
-const data = ref([])
+const data = reactive([])
 
 const props = defineProps(["right"]);
 const router = useRouter();
