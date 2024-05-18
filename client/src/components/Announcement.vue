@@ -59,6 +59,7 @@ function fetchInfo() {
       item.createTime = dayjs(item.createTime).format('YYYY-MM-DD HH:mm:ss')
       announcements.push(item)
     })
+    announcements.reverse()
   }).catch(res => {
     ElMessage.warning(res.response.data["msg"]);
   })
@@ -208,12 +209,12 @@ onMounted(() => {
   margin: 10px;
 }
 
-.alter-text p{
+.alter-text p {
   color: black;
   transition: color 0.2s;
 }
 
-.alter-text p:hover{
+.alter-text p:hover {
   color: #47a4c4;
   cursor: pointer;
 }
