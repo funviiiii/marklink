@@ -165,7 +165,11 @@ const info = reactive({
 })
 
 onMounted(() => {
-  getInfo();
+  if (localStorage.getItem('token') !== null) {
+    getInfo();
+  } else {
+    router.push('/account')
+  }
 })
 
 const getInfo = () => {

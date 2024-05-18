@@ -128,7 +128,11 @@ const logout = () => {
 }
 
 onMounted(() => {
-  checkAuth();
+  if (localStorage.getItem('token') !== null) {
+    checkAuth();
+  } else {
+    router.push('/account')
+  }
 })
 
 </script>

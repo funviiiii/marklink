@@ -74,10 +74,6 @@ public class AccountServiceImpl implements AccountService {
             }
             tmp.setEmail(null);
         }
-        tmp.setPhone(account.getPhone());
-        if (accountMapper.selectOne(tmp) != null) {
-            throw new AccountDuplicateException("手机号已被占用，请使用其他号码");
-        }
 
         // 密码加密
         account.setPassword(Md5Utils.encode(account.getPassword()));
